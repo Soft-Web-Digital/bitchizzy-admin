@@ -13,7 +13,8 @@ const { user } = storeToRefs(
     />
     <v-card-text>
       <h3 class="h3 title overlay-title font-weight-medium mb-1">
-        Hey {{user?.firstname}} {{user?.lastname}} , <br />Download latest report
+        <!-- Hey {{user?.firstname}} {{user?.lastname}} , <br />Download latest report -->
+        Hey Admin Bitchizzy, <br />Download latest report
       </h3>
       <v-btn color="secondary" size="large" class="mt-4"> Download Latest Report</v-btn>
     </v-card-text>

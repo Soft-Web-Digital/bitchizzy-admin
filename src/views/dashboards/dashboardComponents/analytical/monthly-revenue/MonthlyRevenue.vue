@@ -22,7 +22,7 @@ const formatCurrency = (value: any) => {
   <v-card class="bg-primary">
     <v-card-text>
       <div class="d-flex align-start">
-        <h2 class="font-weight-medium title text-white mt-1">
+        <h2 class="font-weight-medium title text-secondary mt-1">
           Total Withdrawals
         </h2>
         <v-spacer></v-spacer>
@@ -33,8 +33,8 @@ const formatCurrency = (value: any) => {
         </div>
       </div>
       <div v-for="(items, index) in revenue.withdrawals_total" :key="index" class="mt-4">
-        <h2  class="text-white text-h5">₦‎ {{formatCurrency(items.total_completed_transactions_amount)}}</h2>
-        <span class="text-white op-5 subtitle-1">Monthly revenue</span>
+        <h2  class="text-secondary text-h5">₦‎ {{formatCurrency(items.total_completed_transactions_amount)}}</h2>
+        <span class="text-secondary op-5 subtitle-1">Monthly revenue</span>
       </div>
     </v-card-text>
   </v-card>

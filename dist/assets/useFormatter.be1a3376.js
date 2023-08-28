@@ -1,0 +1,1 @@
+var u=()=>({formatCurrency:(r,t="en-NG",e="NGN",m=0)=>new Intl.NumberFormat(t,{style:"currency",currency:e,minimumFractionDigits:m}).format(r),formatNumber:r=>new Intl.NumberFormat().format(r),sortItems:r=>r.sort((t,e)=>t.name>e.name?1:t.name<e.name?-1:0)});export{u};

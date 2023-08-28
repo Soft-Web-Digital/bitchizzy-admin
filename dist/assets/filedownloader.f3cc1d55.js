@@ -1,0 +1,1 @@
+function o(t,d){const e=document.createElement("a");e.setAttribute("href",t),e.setAttribute("download",d),e.style.display="none",document.body.appendChild(e),e.click(),document.body.removeChild(e)}export{o as d};

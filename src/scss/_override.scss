@@ -43,6 +43,9 @@ html {
   .v-theme--dark {
     --v-theme-on-warning: 255, 255, 255;
     --v-theme-on-info: 255, 255, 255;
+    --v-theme-primary: 254, 221, 20;
+    --v-theme-secondary: 11, 10, 24;
+    --v-theme-info: 255, 242, 161;
   }
   .v-card.w-auto {
     width: auto !important;

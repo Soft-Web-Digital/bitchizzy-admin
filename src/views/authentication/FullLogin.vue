@@ -32,7 +32,7 @@ const nextPage = () => {
       cols="12"
       lg="5"
       xl="6"
-      class="bg-secondary d-none d-md-flex align-center justify-center"
+      class="bg-info d-none d-md-flex align-center justify-center"
     >
     </v-col>
     <v-col cols="12" lg="7" xl="6" class="d-flex align-center">
@@ -92,7 +92,7 @@ const nextPage = () => {
                   </div>
                 </div>
                 <v-btn
-                  color="secondary"
+                  color="primary"
                   type="submit"
                   :loading="loginLoading"
                   block

@@ -1,0 +1,1 @@
+import{a as e,o as s,c as a,b as o,w as t,u as r,R as c,e as n}from"./index.768fb5ed.js";var _="/assets/ksb-tech.e2b65447.png";const i={class:"logo"},p=n("img",{src:_},null,-1),f=e({__name:"LogoDark",setup(l){return(m,u)=>(s(),a("div",i,[o(r(c),{to:"/"},{default:t(()=>[p]),_:1})]))}});export{_,f as a};

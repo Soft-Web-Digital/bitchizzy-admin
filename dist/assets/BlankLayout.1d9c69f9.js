@@ -1,1 +1,0 @@
-import{a as e,o as a,j as t,w as o,b as s,u as n,W as r,X as u}from"./index.768fb5ed.js";const f=e({__name:"BlankLayout",setup(c){return(p,_)=>(a(),t(r,null,{default:o(()=>[s(n(u))]),_:1}))}});export{f as default};

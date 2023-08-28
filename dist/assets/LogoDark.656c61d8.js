@@ -1,0 +1,1 @@
+import{a as e,o as s,c as t,b as a,w as o,u as r,R as c,e as n}from"./index.d08b3963.js";var _="/assets/chizzu.2b92e447.png";const i={class:"logo"},p=n("img",{src:_,style:{width:"170px"}},null,-1),h=e({__name:"LogoDark",setup(l){return(u,d)=>(s(),t("div",i,[a(r(c),{to:"/"},{default:o(()=>[p]),_:1})]))}});export{_,h as a};

@@ -139,7 +139,7 @@
                   >
                     <v-list-item-title> Approve giftcard </v-list-item-title>
                   </v-list-item>
-                  <v-list-item
+                  <!-- <v-list-item
                     v-if="singleGiftCardTransaction?.status == 'pending'"
                     @click="
                       dialog = true;
@@ -149,7 +149,7 @@
                     color="secondary"
                   >
                     <v-list-item-title> Partial approval </v-list-item-title>
-                  </v-list-item>
+                  </v-list-item> -->
                   <v-list-item
                     v-if="singleGiftCardTransaction?.status == 'pending'"
                     @click="
@@ -244,14 +244,14 @@
                   >
                     <v-list-item-title> Approve giftcard </v-list-item-title>
                   </v-list-item>
-                  <v-list-item
+                  <!-- <v-list-item
                     v-if="item?.status == 'pending'"
                     @click="(dialog = true), (id = item?.id)"
                     link
                     color="secondary"
                   >
                     <v-list-item-title> Partial approval </v-list-item-title>
-                  </v-list-item>
+                  </v-list-item> -->
                   <v-list-item
                     v-if="item?.status == 'pending'"
                     @click="(dialog2 = true), (id = item?.id)"

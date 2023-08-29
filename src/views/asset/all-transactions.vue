@@ -353,7 +353,7 @@ watch([dialog, dialog2], ([newDialog, oldDialog], [newDialog2, oldDialog2]) => {
                       asset_total[0].total_partially_approved_transactions_count
                     }}
                   </h2>
-                  <span>Partial</span>
+                  <span>Approved</span>
                 </div>
               </div>
             </div>
@@ -438,9 +438,9 @@ watch([dialog, dialog2], ([newDialog, oldDialog], [newDialog2, oldDialog2]) => {
           <v-tab @click="getAllAssetTransactions((status = 'declined'))"
             >Declined</v-tab
           >
-          <v-tab @click="getAllAssetTransactions((status = 'partial'))"
+          <!-- <v-tab @click="getAllAssetTransactions((status = 'partial'))"
             >Partial</v-tab
-          >
+          > -->
         </v-tabs>
         <v-table>
           <thead>
@@ -475,7 +475,7 @@ watch([dialog, dialog2], ([newDialog, oldDialog], [newDialog2, oldDialog2]) => {
                   label
                   class="text-capitalize font-weight-bold pa-3"
                   :color="status_color(item?.status)"
-                  >{{ item?.status }}</v-chip
+                  >{{ item?.status == 'partially_approved' ? 'Approved' : item?.status }}</v-chip
                 >
               </td>
               <td>
@@ -511,7 +511,7 @@ watch([dialog, dialog2], ([newDialog, oldDialog], [newDialog2, oldDialog2]) => {
                       >
                         <v-list-item-title> Approve Request </v-list-item-title>
                       </v-list-item>
-                      <v-list-item
+                      <!-- <v-list-item
                         v-if="item?.status == 'transferred'"
                         @click="(dialog = true), (confirmationID = item?.id)"
                         link
@@ -520,7 +520,7 @@ watch([dialog, dialog2], ([newDialog, oldDialog], [newDialog2, oldDialog2]) => {
                         <v-list-item-title>
                           Partial Approval
                         </v-list-item-title>
-                      </v-list-item>
+                      </v-list-item> -->
                       <v-list-item
                         v-if="item?.status == 'transferred'"
                         @click="(dialog2 = true), (confirmationID = item?.id)"

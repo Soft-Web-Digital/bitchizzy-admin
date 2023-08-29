@@ -38,12 +38,12 @@ const sidebarItem: menu[] = [
     to: "/asset/transaction",
     permissions:"manage_asset_transactions"
   },
-  {
-    title: "Top Traders",
-    icon: "credit-card",
-    to: "/top-traders/transaction",
-    permissions:""
-  },
+  // {
+  //   title: "Top Traders",
+  //   icon: "credit-card",
+  //   to: "/top-traders/transaction",
+  //   permissions:""
+  // },
  
   { header: "Users", group_name:"user"},
   {

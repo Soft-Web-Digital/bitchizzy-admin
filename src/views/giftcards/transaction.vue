@@ -436,7 +436,7 @@ watch([dialog, dialog2], ([newDialog, oldDialog], [newDialog2, oldDialog2]) => {
                   )
                 }}
               </h2>
-              <span>Partial</span>
+              <span>Approved</span>
             </div>
             <p v-else>loading...</p>
           </div>
@@ -520,9 +520,9 @@ watch([dialog, dialog2], ([newDialog, oldDialog], [newDialog2, oldDialog2]) => {
           <v-tab @click="getAllGiftCardTransaction((status = 'declined'))"
             >Declined</v-tab
           >
-          <v-tab @click="getAllGiftCardTransaction((status = 'partial'))"
+          <!-- <v-tab @click="getAllGiftCardTransaction((status = 'partial'))"
             >Partial</v-tab
-          >
+          > -->
         </v-tabs>
         <v-table>
           <thead>
@@ -580,7 +580,9 @@ watch([dialog, dialog2], ([newDialog, oldDialog], [newDialog2, oldDialog2]) => {
                   size="small"
                   class="text-capitalize font-weight-bold pa-3"
                   :color="status_color(item?.status)"
-                  >{{ formate_text(item?.status) }}</v-chip
+                  >
+                  {{ formate_text(item?.status == 'partially_approved' ? 'Approved' : item?.status) }}
+                  </v-chip
                 >
               </td>
               <td>
@@ -628,7 +630,7 @@ watch([dialog, dialog2], ([newDialog, oldDialog], [newDialog2, oldDialog2]) => {
                           Approve giftcard
                         </v-list-item-title>
                       </v-list-item>
-                      <v-list-item
+                      <!-- <v-list-item
                         v-if="
                           item?.status == 'pending' && item.children_count == 0
                         "
@@ -639,7 +641,7 @@ watch([dialog, dialog2], ([newDialog, oldDialog], [newDialog2, oldDialog2]) => {
                         <v-list-item-title>
                           Partial approval
                         </v-list-item-title>
-                      </v-list-item>
+                      </v-list-item> -->
                       <v-list-item
                         v-if="
                           item?.status == 'pending' && item.children_count == 0

@@ -337,7 +337,7 @@ watch([dialog, dialog2], ([newDialog, oldDialog], [newDialog2, oldDialog2]) => {
                   <span>Failed</span>
                 </div>
               </div>
-              <div
+              <!-- <div
                 class="d-flex align-start justify-start flex-column w-100 flex-grow-1"
               >
                 <v-avatar color="purple" size="x-large">
@@ -355,7 +355,7 @@ watch([dialog, dialog2], ([newDialog, oldDialog], [newDialog2, oldDialog2]) => {
                   </h2>
                   <span>Approved</span>
                 </div>
-              </div>
+              </div> -->
             </div>
           </v-card>
         </v-col>

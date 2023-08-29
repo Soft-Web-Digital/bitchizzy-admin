@@ -25,13 +25,13 @@
         <v-btn color="red lighten-3" variant="tonal" @click="disapproveAll()">
           Decline all
         </v-btn>
-        <v-btn
+        <!-- <v-btn
           color="purple lighten-3"
           variant="tonal"
           @click="partialApproveAll()"
         >
           Partial approval all
-        </v-btn>
+        </v-btn> -->
       </v-card-actions>
     </div>
 
@@ -100,7 +100,7 @@
               size="small"
               class="text-capitalize font-weight-bold pa-3"
               :color="status_color(singleGiftCardTransaction?.status)"
-              >{{ formate_text(singleGiftCardTransaction?.status) }}</v-chip
+              >{{ singleGiftCardTransaction?.status == 'partially_approved' ? 'Approved' : singleGiftCardTransaction?.status }}</v-chip
             >
           </td>
 
@@ -207,7 +207,7 @@
               size="small"
               class="text-capitalize font-weight-bold pa-3"
               :color="status_color(item?.status)"
-              >{{ formate_text(item?.status) }}</v-chip
+              >{{ formate_text(item?.status == 'partially_approved' ? 'Approved' : item?.status) }}</v-chip
             >
           </td>
 

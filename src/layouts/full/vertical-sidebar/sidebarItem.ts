@@ -12,11 +12,27 @@ export interface menu {
 
 const sidebarItem: menu[] = [
   { header: "Main", group_name:"" },
+
   {
     title: "Dashboard",
     icon: "pie-chart",
     to: "/dashboards/analytical",
     permissions:""
+  },
+
+  { header: "Transactions", group_name:"user"},
+
+  {
+    title: "Giftcard Transactions",
+    icon: "gift",       
+    to: "/giftcards/transaction",
+    permissions:"manage_giftcards"
+  },
+  {
+    title: "Asset Transaction",
+    icon: "trending-down",
+    to: "/asset/transaction",
+    permissions:"manage_asset_transactions"
   },
   {
     title: "Withdrawals",
@@ -24,28 +40,21 @@ const sidebarItem: menu[] = [
     to: "/withdrawals/all",
     permissions:"manage_wallet_transactions"
   },
- 
   {
-    title: "Giftcard Transactions",
-    icon: "gift",       
-    to: "/giftcards/transaction",
-    permissions:"manage_giftcards"
+    title: "Payements",
+    icon: "dollar-sign",
+    to: "",
+    permissions:"manage_wallet_transactions"
   },
-  
   {
-    title: "Asset Transaction",
-    icon: "trending-down",
-    to: "/asset/transaction",
+    title: "Transactions",
+    icon: "trending-up",
+    to: "",
     permissions:"manage_asset_transactions"
   },
-  // {
-  //   title: "Top Traders",
-  //   icon: "credit-card",
-  //   to: "/top-traders/transaction",
-  //   permissions:""
-  // },
  
-  { header: "Users", group_name:"user"},
+  { header: "Management", group_name:"management"},
+
   {
     title: "Users",
     icon: "copy",
@@ -58,15 +67,21 @@ const sidebarItem: menu[] = [
     to: "/admin",
     permissions:"manage_admins"
   },
-  
   {
     title: "Roles & Permissions",
     icon: "user-plus",
     to: "/roles",
     permissions:"manage_access_control_list"
   },
+  {
+    title: "Referrals",
+    icon: "user-check",
+    to: "",
+    permissions:"manage_access_control_list"
+  },
 
-  { header: "Notifications", group_name:"notification" },
+  { header: "News & Updates", group_name:"notification" },
+
   {
     title: "Announcements",
     icon: "bell",
@@ -74,16 +89,40 @@ const sidebarItem: menu[] = [
     permissions:'manage_alerts'
   },
   {
-    title: "Notifications",
+    title: "Banners",
+    icon: "flag",
+    to: "/banners",
+    permissions:"manage_system_data"
+  },
+  {
+    title: "FAQ",
+    icon: "help-circle",
+    to: "",
+    permissions:"manage_system_data"
+  },
+  {
+    title: "App Version",
+    icon: "smartphone",
+    to: "",
+    permissions:"manage_system_data"
+  },
+  {
+    title: "Referral Terms",
     icon: "user-plus",
-    to: "/notifications/all",
-    permissions:"receive_notifications"
+    to: "",
+    permissions:"manage_system_data"
   },
 
-  { header: "Settings",  group_name:"giftcard"  },
+ { header: "Configuration", group_name:"giftcard" },
 
   {
-    title:"GiftCard Mgt",
+    title: "System bank account",
+    icon: "users",
+    to: "/system-bank",
+    permissions:"manage_system_bank_accounts"
+  },
+  {
+    title:"GiftCard Management",
     icon:"gift",
     group_name:"giftcard",
     children: [
@@ -103,7 +142,7 @@ const sidebarItem: menu[] = [
 ],
   },
   {
-    title:"Crypto",
+    title:"Crypto Management",
     icon:"cpu",
     group_name:'crypto',
     children: [
@@ -129,37 +168,115 @@ const sidebarItem: menu[] = [
 ],
   },
   {
-    title:"Configuration",
-    icon:"command",
-    group_name:'config',
-    children: [
+    title: "Service Provider",
+    icon: "briefcase",
+    to: "",
+    permissions:"manage_system_bank_accounts"
+  },
+  {
+    title: "Service Settings",
+    icon: "settings",
+    to: "",
+    permissions:"manage_system_bank_accounts"
+  },
+  {
+    title: "Trading Settings",
+    icon: "trending-up",
+    to: "/system-data",
+    permissions:"manage_system_data"
+  },
 
-      {
-        title: "Banners",
-        icon: "",
-        to: "/banners",
-        permissions:"manage_system_data"
-      },
-      {
-        title: "App version",
-        icon: "",
-        to: "/system-data",
-        permissions:"manage_system_data"
-      },
-      {
-        title: "Countries Mgt",
-        icon: "",
-        to: "/countries/all",
-        permissions:"manage_countries"
-      },
-      {
-        title: "System bank account",
-        icon: "users",
-        to: "/system-bank",
-        permissions:"manage_system_bank_accounts"
-      },
-],
-  }
+
+
+//   { header: "Notifications", group_name:"notification" },
+  
+//   {
+//     title: "Notifications",
+//     icon: "user-plus",
+//     to: "/notifications/all",
+//     permissions:"receive_notifications"
+//   },
+
+//   { header: "Settings",  group_name:"giftcard"  },
+
+//   {
+//     title:"GiftCard Mgt",
+//     icon:"gift",
+//     group_name:"giftcard",
+//     children: [
+
+//       {
+//         title: "Categories",
+//         icon: "",
+//         to: "/giftcards/categories",
+//         permissions:"manage_giftcard_categories"
+//       },
+//       {
+//         title: "Products",
+//         icon: "",
+//         to: "/giftcards/products",
+//         permissions:"manage_giftcard_products"
+//       },
+// ],
+//   },
+//   {
+//     title:"Crypto",
+//     icon:"cpu",
+//     group_name:'crypto',
+//     children: [
+
+//       {
+//         title: "Networks",
+//         icon: "",
+//         to: "/networks/all",
+//         permissions:"manage_networks"
+//       },
+//       {
+//         title: "Assets",
+//         icon: "",
+//         to: "/assets/all",
+//         permissions:"manage_assets"
+//       },
+//       {
+//         title: "Currencies",
+//         icon: "",
+//         to: "/currencies/all",
+//         permissions:"manage_currencies"
+//       },
+// ],
+//   },
+//   {
+//     title:"Configuration",
+//     icon:"command",
+//     group_name:'config',
+//     children: [
+
+//       {
+//         title: "Banners",
+//         icon: "",
+//         to: "/banners",
+//         permissions:"manage_system_data"
+//       },
+//       {
+//         title: "App version",
+//         icon: "",
+//         to: "/system-data",
+//         permissions:"manage_system_data"
+//       },
+//       {
+//         title: "Countries Mgt",
+//         icon: "",
+//         to: "/countries/all",
+//         permissions:"manage_countries"
+//       },
+//       {
+//         title: "System bank account",
+//         icon: "users",
+//         to: "/system-bank",
+//         permissions:"manage_system_bank_accounts"
+//       },
+// ],
+//   }
 
  
 ];

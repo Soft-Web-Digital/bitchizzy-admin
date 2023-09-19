@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
 import ksbTechApi from "../../axios";
+import { useCookies } from 'vue3-cookies'
+
 import {
   login,
   logout,
@@ -18,6 +20,7 @@ import {
   reset,
 } from "../../apiRoute";
 import { useNotification } from "@kyvg/vue3-notification";
+const COOKIE_NAME = 'authToken';
 
 interface ksbTechAuth {
   isLoggedIn: boolean;
@@ -103,6 +106,9 @@ export const useAuthStore = defineStore("auth", {
 
               this.token = res.data.data.token;
               this.user = res.data.data.admin;
+
+              const { cookies } = useCookies();
+              cookies.set(COOKIE_NAME, this.token, '1d');
             }
           );
       } catch (error: any) {
@@ -276,6 +282,9 @@ export const useAuthStore = defineStore("auth", {
 
             this.LoggingOut = false;
             console.log(res, "grgrg");
+
+            const { cookies } = useCookies();
+            cookies.remove(COOKIE_NAME);
           })
           .catch((error: any) => {
             // notify({
@@ -619,6 +628,20 @@ export const useAuthStore = defineStore("auth", {
     },
     viewAllNotifications() {
       this.notificationModal = true;
+    },
+    isAuthenticated() {
+      const { cookies } = useCookies();
+      const cookie = cookies.isKey(COOKIE_NAME)
+      if (cookies) {
+        return cookie;
+      } else {
+        this.token = "";
+        this.isLoggedIn = false;
+        // @ts-ignore
+
+        this.LoggingOut = false;
+      }
+      
     },
   },
   persist: {

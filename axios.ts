@@ -1,8 +1,22 @@
 import axios from "axios";
 import router from "@/router";
+import { useAuthStore } from "@/stores/auth";
 
 const ksbTechApi: any = axios.create({
   baseURL: import.meta.env.VITE_APP_BASE_URL,
+});
+
+ksbTechApi.interceptors.request.use(async (config: any) => {
+  if (router.currentRoute.value.path !== "/auth/login") {
+    const authStore = useAuthStore();
+    
+    if (!authStore.isAuthenticated()) {
+      await router.push("/auth/login");
+      await authStore.ksbTechLogout();
+    }
+  }
+
+  return config;
 });
 
 ksbTechApi.interceptors.response.use(

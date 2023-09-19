@@ -18,6 +18,8 @@ import '@vuepic/vue-datepicker/dist/main.css'
 // import VueEasyLightbox from 'vue-easy-lightbox'
 import { VueQueryPlugin } from "vue-query";
 
+import VueCookies from 'vue3-cookies';
+
 
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
@@ -35,6 +37,7 @@ app.component(VueFeather.name, VueFeather);
 app.use(pinia);
 
 app.use(VueApexCharts);
+app.use(VueCookies);
 app.use(router);
 app.use(Notifications)
 app.use(vuetify).mount("#app");

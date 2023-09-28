@@ -1,7 +1,8 @@
 import { defineStore } from "pinia";
 
-import ksbTechApi from "../../axios";
-import { withdrawals, transaction_count } from "../../apiRoute";
+import ksbTechApi from "../../axios-services";
+import ksbTechApiTrade from "../../axios";
+import { withdrawals, transaction_count, payments, transaction } from "../../apiRoute";
 import { useAuthStore } from "../stores/auth";
 import { useNotification } from "@kyvg/vue3-notification";
 
@@ -14,24 +15,30 @@ interface Data {
 
 interface State {
   withdrawal: any;
+  payments: any;
   loading: boolean;
   disapproving: boolean;
   approving: boolean;
   singleWithdrawal: any;
   dialog: boolean;
 
+  all_transaction: any;
   transactions: any;
+  total_withdrawal: any;
 }
 
 export const useWithdrawalsStore = defineStore("withdrawals", {
   state: (): State => ({
     withdrawal: {},
+    payments: {},
     loading: false,
     disapproving: false,
     approving: false,
     singleWithdrawal: {},
     dialog: false,
     transactions: {},
+    all_transaction: {},
+    total_withdrawal: {},
   }),
   getters: {
     withdrawals: (state) => state.withdrawal,
@@ -69,7 +76,7 @@ export const useWithdrawalsStore = defineStore("withdrawals", {
       const { notify } = useNotification();
       this.loading = true;
       try {
-        await ksbTechApi
+        await ksbTechApiTrade
           .get(transaction_count, {
             headers: {
               Accept: "application/json",
@@ -104,6 +111,98 @@ export const useWithdrawalsStore = defineStore("withdrawals", {
               "user" +
               "&page=" +
               page_no +
+              // "&filter[status]=" +
+              // status +
+              "&per_page=100",
+            {
+              headers: {
+                Accept: "application/json",
+                Authorization: `Bearer ${store.token}`,
+              },
+            }
+          )
+          .then(
+            (res: {
+              data: {
+                message: string;
+                data: { wallet_transactions: Data };
+              };
+            }) => {
+              this.loading = false;
+
+              this.withdrawal = res.data;
+              
+              if (Array.isArray(res.data.data)) {
+                this.total_withdrawal = res.data.data.reduce(
+                  (total: number, item: any) => total + item.amount,
+                  0
+                );
+              } else {
+                console.error("Data is not an array");
+              }
+            }
+          );
+      } catch (error) {
+        this.loading = false;
+      }
+    },
+
+    async getAllPayments(status: string, page_no: number) {
+      const store = useAuthStore();
+      const { notify } = useNotification();
+      this.loading = true;
+      try {
+        await ksbTechApi
+          .get(
+            payments +
+              "?include=" +
+              "user" +
+              "&page=" +
+              page_no +
+              // "&filter[status]=" +
+              // status +
+              "&per_page=100",
+            {
+              headers: {
+                Accept: "application/json",
+                Authorization: `Bearer ${store.token}`,
+              },
+            }
+          )
+          .then(
+            (res: {
+              data: {
+                message: string;
+                data: { wallet_transactions: Data };
+              };
+            }) => {
+              this.loading = false;
+
+              this.payments = res.data;
+
+              // this.withdrawal = {
+              //   "message": "Data fetched successfully!",
+              //   "data": res.data.data
+              // }
+            }
+          );
+      } catch (error) {
+        this.loading = false;
+      }
+    },
+
+    async getAllTransactions(status: string, page_no: number) {
+      const store = useAuthStore();
+      const { notify } = useNotification();
+      this.loading = true;
+      try {
+        await ksbTechApi
+          .get(
+            transaction +
+              "?include=" +
+              "user" +
+              "&page=" +
+              page_no +
               "&filter[status]=" +
               status +
               "&per_page=100",
@@ -123,13 +222,15 @@ export const useWithdrawalsStore = defineStore("withdrawals", {
             }) => {
               this.loading = false;
 
-              this.withdrawal = res.data.data.wallet_transactions;
+              this.all_transaction = res.data;
+
             }
           );
       } catch (error) {
         this.loading = false;
       }
     },
+
     async getAllWithDrawalsByUserID(id: string) {
       const store = useAuthStore();
       const { notify } = useNotification();
@@ -239,6 +340,49 @@ export const useWithdrawalsStore = defineStore("withdrawals", {
       try {
         await ksbTechApi
           .post(withdrawals + "/" + id + "/approve", formData, {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${store.token}`,
+            },
+          })
+          .then(
+            (res: {
+              data: {
+                message: string;
+                data: { withdrawal_requests: object };
+              };
+            }) => {
+              this.approving = false;
+              notify({
+                title: "Successful",
+                text: res.data.message,
+                type: "success",
+              });
+              this.getAllWithDrawals("pending", 1);
+              this.dialog = false;
+            }
+          );
+      } catch (error: any) {
+        this.approving = false;
+        this.dialog = false;
+        notify({
+          title: "An Error Occurred",
+          text: error.response.data.message,
+          type: "error",
+        });
+      }
+    },
+    async approveTransactionRequest(id: string) {
+      const store = useAuthStore();
+      const { notify } = useNotification();
+      this.loading = true;
+
+      var formData = new FormData();
+
+      formData.append("_method", "POST");
+      try {
+        await ksbTechApi
+          .post(transaction + "/approve/" + id, formData, {
             headers: {
               Accept: "application/json",
               Authorization: `Bearer ${store.token}`,

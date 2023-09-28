@@ -198,6 +198,27 @@ const router = createRouter({
             import("@/views/system-data.vue"),
             meta: { requiresAuth: true}
         },
+        {
+          name: "Payments",
+          path: "/payments/all",
+          component: () =>
+            import("@/views/payments/all.vue"),
+            meta: { requiresAuth: true}
+        },
+        {
+          name: "Transactions",
+          path: "/transactions/all",
+          component: () =>
+            import("@/views/transaction/all.vue"),
+            meta: { requiresAuth: true}
+        },
+        {
+          name: "Referrals",
+          path: "/referrals/all",
+          component: () =>
+            import("@/views/referral/all.vue"),
+            meta: { requiresAuth: true}
+        },
       ],
     },
     {

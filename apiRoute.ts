@@ -15,7 +15,10 @@ export const user = '/admin/users'
 export const requestCode = '/admin/password/forgot'
 export const verifyCodeAndEmail = '/admin/password/verify'
 export const resetPassword = '/admin/password/verify'
-export const withdrawals = '/admin/wallet-transactions'
+export const withdrawals = '/admin/withdrawals'
+export const payments = '/admin/payments'
+export const transaction = '/admin/transactions'
+export const referrals = '/admin/referrals'
 
 
 export const giftCardCategory = '/admin/giftcard-categories'

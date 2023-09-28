@@ -24,6 +24,7 @@ const {
   disapproving,
   approving,
   withdrawals_total,
+  total_withdrawal
 } = storeToRefs(useWithdrawalsStore());
 const status = ref("");
 const dialog2 = ref(false);
@@ -32,6 +33,7 @@ const fetchData = async () => {
   await getAllWithDrawals(status.value, 1);
   await getAllTransactionCount();
 }
+
 
 // Set up the interval on mount
 let intervalId = ref<any>(null);
@@ -99,15 +101,17 @@ const disapprove = () => {
   dialog2.value = true;
 };
 
-const status_options = ref(["Pending", "Completed", "Declined"]);
+const status_options = ref(["Pending", "Completed", "Declined", "Success"]);
 
 // CHANGE STATUS COLOR
-type StatusType = "pending" | "completed" | "declined";
+type StatusType = "pending" | "completed" | "declined" | "success";
 
 const status_color = (status: StatusType) => {
   return status == "pending"
     ? "yellow-darken-3"
     : status == "completed"
+    ? "green lighten-3"
+    : status == "success"
     ? "green lighten-3"
     : status == "declined"
     ? "red lighten-3"
@@ -141,7 +145,7 @@ const tab = ref(null);
       :breadcrumbs="breadcrumbs"
     ></BaseBreadcrumb>
     <div class="mt-4">
-      <v-row v-if="permissions?.length == 18" class="my-3">
+      <!-- <v-row v-if="permissions?.length == 18" class="my-3">
         <v-col cols="12" sm="6" md="4">
           <v-card elevation="0" class="pa-6 h-100">
             <div class="">
@@ -150,7 +154,7 @@ const tab = ref(null);
 
             <div v-if="withdrawals_total?.length > 0" class="mt-11">
               <h2 class="mb-2">
-                ₦‎{{ formatCurrency(withdrawals_total[0].total_completed_transactions_amount) }}
+                ₦‎{{ formatCurrency(withdrawals?.meta?.sum) }}
               </h2>
               <span>All time</span>
             </div>
@@ -170,7 +174,7 @@ const tab = ref(null);
                 <div v-if="withdrawals_total?.length > 0" class="pl-3 my-5">
                   <h2 class="mb-2">
                     {{
-                      withdrawals_total[0].total_completed_transactions_count
+                      formatCurrency(withdrawals?.meta?.success)
                     }}
                   </h2>
                   <span>Successful</span>
@@ -188,7 +192,7 @@ const tab = ref(null);
 
                 <div v-if="withdrawals_total?.length > 0" class="pl-3 my-5">
                   <h2 class="mb-2">
-                    {{ withdrawals_total[0].total_pending_transactions_count }}
+                    {{ formatCurrency(withdrawals?.meta?.pending) }}
                   </h2>
                   <span>pending</span>
                 </div>
@@ -205,7 +209,7 @@ const tab = ref(null);
 
                 <div v-if="withdrawals_total?.length > 0" class="pl-3 my-5">
                   <h2 class="mb-2">
-                    {{ withdrawals_total[0].total_declined_transactions_count }}
+                    {{ formatCurrency(withdrawals?.meta?.failed) }}
                   </h2>
                   <span>Failed</span>
                 </div>
@@ -213,14 +217,14 @@ const tab = ref(null);
             </div>
           </v-card>
         </v-col>
-      </v-row>
+      </v-row> -->
 
       <v-card class="pa-5">
         <v-tabs v-model="tab" bg-color="none" class="mb-5">
-          <v-tab @click="getAllWithDrawals('')">All</v-tab>
-          <v-tab @click="getAllWithDrawals('pending')">Pending</v-tab>
-          <v-tab @click="getAllWithDrawals('completed')">Approved</v-tab>
-          <v-tab @click="getAllWithDrawals('declined')">Declined</v-tab>
+          <v-tab @click="getAllWithDrawals('', 1)">All</v-tab>
+          <v-tab @click="getAllWithDrawals('pending', 1)">Pending</v-tab>
+          <v-tab @click="getAllWithDrawals('completed', 1)">Approved</v-tab>
+          <v-tab @click="getAllWithDrawals('declined', 1)">Declined</v-tab>
         </v-tabs>
         <v-window v-model="tab">
           <v-table>
@@ -257,7 +261,7 @@ const tab = ref(null);
                   >
                 </td>
                 <td>₦‎ {{ withdrawal.amount.toLocaleString() }}</td>
-                <td>{{ withdrawal?.account_number ?? "---" }}</td>
+                <td>{{ withdrawal?.meta?.bank?.account_number ?? "---" }}</td>
                 <td>
                   {{
                     useDateFormat(withdrawal?.created_at, "DD, MMMM-YYYY").value
@@ -292,7 +296,7 @@ const tab = ref(null);
                         </v-btn>
                       </template>
                       <v-list>
-                        <v-list-item
+                        <!-- <v-list-item
                           :to="{
                             name: 'viewWithdrawals',
                             params: { id: withdrawal.id },
@@ -301,7 +305,7 @@ const tab = ref(null);
                           color="secondary"
                         >
                           <v-list-item-title> View Details </v-list-item-title>
-                        </v-list-item>
+                        </v-list-item> -->
                         <v-list-item
                           v-if="withdrawal?.status == 'pending'"
                           @click="approveRequest(withdrawal?.id)"
@@ -416,7 +420,7 @@ const tab = ref(null);
                 <div>
                   <h5 class="">User name</h5>
                   <p class="">
-                    {{ singleWithdrawal?.user?.firstname }}
+                    {{ singleWithdrawal?.user?.first_name }}
                   </p>
                 </div>
               </div>

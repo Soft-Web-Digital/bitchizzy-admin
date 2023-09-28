@@ -237,21 +237,21 @@ onMounted(async () => {
   );
 });
 
-var pusher = new Pusher("2bd4bb8b30b7085ba28d", {
-  cluster: "mt1",
-});
+// var pusher = new Pusher("2bd4bb8b30b7085ba28d", {
+//   cluster: "mt1",
+// });
 
-var channel = pusher.subscribe("giftcards");
-channel.bind("new-giftcard", function (data: any) {
-  console.log(data);
-  if (gift_transactions.value) {
-    gift_transactions.value?.data.unshift(data?.giftcard);
-  }
-});
+// var channel = pusher.subscribe("giftcards");
+// channel.bind("new-giftcard", function (data: any) {
+//   console.log(data);
+//   if (gift_transactions.value) {
+//     gift_transactions.value?.data.unshift(data?.giftcard);
+//   }
+// });
 
-onUnmounted(() => {
-  pusher.unsubscribe("giftcards");
-});
+// onUnmounted(() => {
+//   pusher.unsubscribe("giftcards");
+// });
 const refresh = async () => {
   await getAllGiftCardTransaction(
     status.value,

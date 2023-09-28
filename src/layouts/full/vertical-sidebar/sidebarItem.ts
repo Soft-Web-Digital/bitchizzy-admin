@@ -43,13 +43,13 @@ const sidebarItem: menu[] = [
   {
     title: "Payements",
     icon: "dollar-sign",
-    to: "",
+    to: "/payments/all",
     permissions:"manage_wallet_transactions"
   },
   {
     title: "Transactions",
     icon: "trending-up",
-    to: "",
+    to: "/transactions/all",
     permissions:"manage_asset_transactions"
   },
  
@@ -76,7 +76,7 @@ const sidebarItem: menu[] = [
   {
     title: "Referrals",
     icon: "user-check",
-    to: "",
+    to: "/referrals/all",
     permissions:"manage_access_control_list"
   },
 

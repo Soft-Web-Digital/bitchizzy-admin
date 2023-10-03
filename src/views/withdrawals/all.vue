@@ -78,6 +78,9 @@ const header = ref([
     title: "Account number",
   },
   {
+    title: "Bank",
+  },
+  {
     title: "Date and Time",
   },
   {
@@ -223,8 +226,8 @@ const tab = ref(null);
         <v-tabs v-model="tab" bg-color="none" class="mb-5">
           <v-tab @click="getAllWithDrawals('', 1)">All</v-tab>
           <v-tab @click="getAllWithDrawals('pending', 1)">Pending</v-tab>
-          <v-tab @click="getAllWithDrawals('completed', 1)">Approved</v-tab>
-          <v-tab @click="getAllWithDrawals('declined', 1)">Declined</v-tab>
+          <v-tab @click="getAllWithDrawals('success', 1)">Success</v-tab>
+          <v-tab @click="getAllWithDrawals('failed', 1)">Failed</v-tab>
         </v-tabs>
         <v-window v-model="tab">
           <v-table>
@@ -261,7 +264,8 @@ const tab = ref(null);
                   >
                 </td>
                 <td>₦‎ {{ withdrawal.amount.toLocaleString() }}</td>
-                <td>{{ withdrawal?.meta?.bank?.account_number ?? "---" }}</td>
+                <td>{{ withdrawal?.meta?.account_number ?? "---" }}</td>
+                <td>{{ withdrawal?.meta?.bank_name ?? "---" }}</td>
                 <td>
                   {{
                     useDateFormat(withdrawal?.created_at, "DD, MMMM-YYYY").value
@@ -308,7 +312,7 @@ const tab = ref(null);
                         </v-list-item> -->
                         <v-list-item
                           v-if="withdrawal?.status == 'pending'"
-                          @click="approveRequest(withdrawal?.id)"
+                          @click="approveRequest(withdrawal?.reference)"
                           link
                           color="secondary"
                         >
@@ -319,7 +323,7 @@ const tab = ref(null);
                         <v-list-item
                           v-if="withdrawal?.status == 'pending'"
                           @click="
-                            id = withdrawal?.id;
+                            id = withdrawal?.reference;
                             disapprove();
                           "
                           link

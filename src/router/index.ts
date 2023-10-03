@@ -219,6 +219,20 @@ const router = createRouter({
             import("@/views/referral/all.vue"),
             meta: { requiresAuth: true}
         },
+        {
+          name: "Referral Terms",
+          path: "/referral/terms/all",
+          component: () =>
+            import("@/views/referral/terms.vue"),
+            meta: { requiresAuth: true}
+        },
+        {
+          name: "FAQ",
+          path: "/faq",
+          component: () =>
+            import("@/views/faq/all.vue"),
+            meta: { requiresAuth: true}
+        },
       ],
     },
     {

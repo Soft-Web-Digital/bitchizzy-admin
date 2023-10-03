@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import ksbTechApi from "../../axios-services";
-import { referrals } from "../../apiRoute";
+import { referrals, terms } from "../../apiRoute";
 import { useNotification } from "@kyvg/vue3-notification";
 import { useAuthStore } from "./auth";
 import { useRoute } from "vue-router";
@@ -14,7 +14,7 @@ interface Data {
   
   interface State {
     referrals: any;
-    payments: any;
+    terms: any;
     loading: boolean;
     disapproving: boolean;
     approving: boolean;
@@ -29,7 +29,7 @@ interface Data {
   export const useReferralsStore = defineStore("referrals", {
     state: (): State => ({
         referrals: {},
-        payments: {},
+        terms: {},
         loading: false,
         disapproving: false,
         approving: false,
@@ -66,63 +66,7 @@ interface Data {
                   }) => {
                     this.loading = false;
       
-                    // this.referrals = res.data;
-
-                    this.referrals = {
-                        "message": "Data fetched successfully!",
-                        "data": [
-                            {
-                                "first_name": "Igwe",
-                                "last_name": "Chibuike",
-                                "email": "igwejeremiah931@gmail.com",
-                                "joined": "Wed, Sep 27, 2023 11:04 PM",
-                                "status": "pending",
-                                "referred_by": "emmanuelezenwa35@gmail.com",
-                                "has_made_payment": true
-                            },
-                            {
-                                "first_name": "Samuel",
-                                "last_name": "Oseni",
-                                "email": "osenisamuel2030@gmail.com",
-                                "joined": "Wed, Sep 27, 2023 10:15 PM",
-                                "status": "pending",
-                                "referred_by": "samuelakins88@gmail.com",
-                                "has_made_payment": true
-                            },
-                            {
-                                "first_name": "Okelue",
-                                "last_name": "Chidera",
-                                "email": "okeluechidera4@gmail.com",
-                                "joined": "Wed, Sep 27, 2023 10:15 PM",
-                                "status": "pending",
-                                "referred_by": "victorchibuike413@gmail.com",
-                                "has_made_payment": true
-                            },
-                            {
-                                "first_name": "Ajenishe",
-                                "last_name": "samiat",
-                                "email": "ajenisesamiat@gmail.com",
-                                "joined": "Wed, Sep 27, 2023 8:23 PM",
-                                "status": "pending",
-                                "referred_by": "temitopsy195@gmail.com",
-                                "has_made_payment": false
-                            },
-                            {
-                                "first_name": "Ajenishe",
-                                "last_name": "samiat",
-                                "email": "oluwabedemi226@gmail.com",
-                                "joined": "Wed, Sep 27, 2023 7:26 PM",
-                                "status": "pending",
-                                "referred_by": "temitopsy195@gmail.com",
-                                "has_made_payment": false
-                            },
-                        ],
-                        "meta": {
-                            "page": 1,
-                            "per_page": 50,
-                            "total": 976
-                        }
-                    };
+                    this.referrals = res.data;
 
                   }
                 );
@@ -131,48 +75,219 @@ interface Data {
             }
         },
 
-        async deleteReferral(id: string, note: string) {
-            const store = useAuthStore();
-            const { notify } = useNotification();
-            this.disapproving = true;
-      
-            var formData = new FormData();
-            formData.append("note", note);
-            try {
-              await ksbTechApi
-                .patch(referrals + "/" + id + "/decline", formData, {
+        async getReferralTerms(page_no: number) {
+          const store = useAuthStore();
+          const { notify } = useNotification();
+          this.loading = true;
+          try {
+            await ksbTechApi
+              .get(
+                  terms +
+                  "/all",
+                {
                   headers: {
                     Accept: "application/json",
                     Authorization: `Bearer ${store.token}`,
                   },
-                })
-                .then(
-                  (res: {
-                    data: {
-                      message: string;
-                      data: { withdrawal_requests: object };
-                    };
-                  }) => {
-                    this.disapproving = false;
-                    this.dialog = false;
-                    notify({
-                      title: "Successful",
-                      text: res.data.message,
-                      type: "success",
-                    });
-                    this.getReferrals("", 1);
-                  }
-                );
-            } catch (error: any) {
-              this.disapproving = false;
-              this.dialog = false;
-              notify({
-                title: "An Error Occurred",
-                text: error.response.data.message,
-                type: "error",
-              });
+                }
+              )
+              .then(
+                (res: {
+                  data: {
+                    message: string;
+                    data: { terms: Data };
+                  };
+                }) => {
+                  this.loading = false;
+    
+                  this.terms = res.data.data;
+
+                }
+              );
+            } catch (error) {
+              this.loading = false;
             }
-          },
+        },
+
+        async deleteReferral(id: string, note: string) {
+          const store = useAuthStore();
+          const { notify } = useNotification();
+          this.disapproving = true;
+    
+          var formData = new FormData();
+          formData.append("note", note);
+          try {
+            await ksbTechApi
+              .patch(referrals + "/" + id + "/decline", formData, {
+                headers: {
+                  Accept: "application/json",
+                  Authorization: `Bearer ${store.token}`,
+                },
+              })
+              .then(
+                (res: {
+                  data: {
+                    message: string;
+                    data: { withdrawal_requests: object };
+                  };
+                }) => {
+                  this.disapproving = false;
+                  this.dialog = false;
+                  notify({
+                    title: "Successful",
+                    text: res.data.message,
+                    type: "success",
+                  });
+                  this.getReferrals("", 1);
+                }
+              );
+          } catch (error: any) {
+            this.disapproving = false;
+            this.dialog = false;
+            notify({
+              title: "An Error Occurred",
+              text: error.response.data.message,
+              type: "error",
+            });
+          }
+        },
+
+        async createReferralTerms(terms_data:{
+              title:string,
+              body:string
+          }) {
+          const store = useAuthStore();
+          var formData = new FormData();
+      
+          this.loading = true;
+    
+          formData.append("title", terms_data.title);
+          formData.append("body", terms_data.body);
+      
+          const { notify } = useNotification();
+          try {
+            await ksbTechApi
+              .post(terms + "/create", formData, {
+                headers: {
+                  Accept: "application/json",
+                  Authorization: `Bearer ${store.token}`,
+                },
+              })
+              .then(
+                (res: {
+                  data: {
+                    message: string;
+                  };
+                }) => {
+                  this.loading = false;
+                  notify({
+                    title: "Successful",
+                    text: res.data.message,
+                    type: "success",
+                  });
+                  this.getReferralTerms(1);
+                  this.dialog = false
+                }
+              );
+          } catch (error:any) {
+            this.loading = false;
+            notify({
+              title: "An Error Occurred",
+              text: error.response.data.message,
+              type: "error",
+            });
+          }
+        },
+
+        async updateReferralTerms(terms_data:{
+              title:string,
+              body:string,
+              id: string,
+          }) {
+          const store = useAuthStore();
+          var formData = new FormData();
+      
+          this.loading = true;
+
+          formData.append("title", terms_data.title);
+          formData.append("body", terms_data.body);
+          formData.append("id", terms_data.id);
+          formData.append("_method", "PUT");
+      
+          const { notify } = useNotification();
+          try {
+            await ksbTechApi
+              .post(terms + "/update", formData, {
+                headers: {
+                  Accept: "application/json",
+                  Authorization: `Bearer ${store.token}`,
+                },
+              })
+              .then(
+                (res: {
+                  data: {
+                    message: string;
+                  };
+                }) => {
+                  this.loading = false;
+                  notify({
+                    title: "Successful",
+                    text: res.data.message,
+                    type: "success",
+                  });
+                  this.getReferralTerms(1);
+                  this.dialog = false
+                }
+              );
+          } catch (error:any) {
+            this.loading = false;
+            notify({
+              title: "An Error Occurred",
+              text: error.response.data.message,
+              type: "error",
+            });
+          }
+        },
+
+        async deleteReferralTerms(id: string) {
+          const store = useAuthStore();
+      
+          this.loading = true;
+      
+          const { notify } = useNotification();
+          try {
+            await ksbTechApi
+              .delete(terms + "/delete/" + id, {
+                headers: {
+                  Accept: "application/json",
+                  Authorization: `Bearer ${store.token}`,
+                },
+              })
+              .then(
+                (res: {
+                  data: {
+                    message: string;
+                  };
+                }) => {
+                  this.loading = false;
+                  notify({
+                    title: "Successful",
+                    text: res.data.message,
+                    type: "success",
+                  });
+                  this.getReferralTerms(1);
+                  this.dialog = false
+                }
+              );
+          } catch (error:any) {
+            this.loading = false;
+            notify({
+              title: "An Error Occurred",
+              text: error.response.data.message,
+              type: "error",
+            });
+          }
+        },
     }
 
   });

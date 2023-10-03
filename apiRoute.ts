@@ -19,6 +19,8 @@ export const withdrawals = '/admin/withdrawals'
 export const payments = '/admin/payments'
 export const transaction = '/admin/transactions'
 export const referrals = '/admin/referrals'
+export const faq = '/admin/faq'
+export const terms = '/admin/terms'
 
 
 export const giftCardCategory = '/admin/giftcard-categories'

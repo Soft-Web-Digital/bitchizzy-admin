@@ -82,9 +82,9 @@ const header = ref([
   {
     title: "Status",
   },
-  {
-    title: "Actions",
-  },
+  // {
+  //   title: "Actions",
+  // },
 ]);
 
 
@@ -222,8 +222,8 @@ const tab = ref(null);
         <v-tabs v-model="tab" bg-color="none" class="mb-5">
           <v-tab @click="getAllPayments('', 1)">All</v-tab>
           <v-tab @click="getAllPayments('pending', 1)">Pending</v-tab>
-          <v-tab @click="getAllPayments('completed', 1)">Approved</v-tab>
-          <v-tab @click="getAllPayments('declined', 1)">Declined</v-tab>
+          <v-tab @click="getAllPayments('success', 1)">Success</v-tab>
+          <v-tab @click="getAllPayments('failed', 1)">Failed</v-tab>
         </v-tabs>
         <v-window v-model="tab">
           <v-table>
@@ -260,7 +260,7 @@ const tab = ref(null);
                   >
                 </td>
                 <td>₦‎ {{ payment.amount.toLocaleString() }}</td>
-                <td>{{ payment?.payment_type ?? "---" }}</td>
+                <td>{{ payment?.title ?? "---" }}</td>
                 <td>
                   {{
                     useDateFormat(payment?.created_at, "DD, MMMM-YYYY").value
@@ -283,7 +283,7 @@ const tab = ref(null);
                 <td>
                   <!-- <v-icon icon="mdi-dots-vertical"></v-icon> -->
                   <v-row justify="center">
-                    <v-menu transition="scroll-y-transition">
+                    <!-- <v-menu transition="scroll-y-transition">
                       <template v-slot:activator="{ props }">
                         <v-btn
                           text
@@ -329,7 +329,7 @@ const tab = ref(null);
                           </v-list-item-title>
                         </v-list-item>
                       </v-list>
-                    </v-menu>
+                    </v-menu> -->
                   </v-row>
                 </td>
               </tr>

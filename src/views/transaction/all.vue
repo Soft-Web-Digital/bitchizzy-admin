@@ -11,6 +11,7 @@ const { permissions } = storeToRefs(useAuthStore())
 const {
   getAllTransactions,
   approveTransactionRequest,
+  declineTransactionRequest,
   declineRequest,
   getSingleWithDrawals,
   filterWithDrawalsByDateCreated,
@@ -222,8 +223,8 @@ const tab = ref(null);
         <v-tabs v-model="tab" bg-color="none" class="mb-5">
           <v-tab @click="getAllTransactions('', 1)">All</v-tab>
           <v-tab @click="getAllTransactions('pending', 1)">Pending</v-tab>
-          <v-tab @click="getAllTransactions('completed', 1)">Approved</v-tab>
-          <v-tab @click="getAllTransactions('declined', 1)">Declined</v-tab>
+          <v-tab @click="getAllTransactions('success', 1)">Success</v-tab>
+          <v-tab @click="getAllTransactions('failed', 1)">Failed</v-tab>
         </v-tabs>
         <v-window v-model="tab">
           <v-table>
@@ -260,7 +261,7 @@ const tab = ref(null);
                   >
                 </td>
                 <td>₦‎ {{ transaction.amount.toLocaleString() }}</td>
-                <td>{{ transaction?.payment_type ?? "---" }}</td>
+                <td>{{ transaction?.title ?? "---" }}</td>
                 <td>
                   {{
                     useDateFormat(transaction?.created_at, "DD, MMMM-YYYY").value
@@ -306,7 +307,7 @@ const tab = ref(null);
                           <v-list-item-title> View Details </v-list-item-title>
                         </v-list-item>
                         <v-list-item
-                          @click="approveTransactionRequest(transaction?.id)"
+                          @click="approveTransactionRequest(transaction?.reference)"
                           link
                           color="secondary"
                         >
@@ -316,7 +317,7 @@ const tab = ref(null);
                         </v-list-item>
                         <v-list-item
                           @click="
-                            id = transaction?.id;
+                            id = transaction?.reference;
                             disapprove();
                           "
                           link
@@ -553,7 +554,7 @@ const tab = ref(null);
               color="secondary"
               class="my-5"
               block
-              @click="declineRequest(id, note)"
+              @click="declineTransactionRequest(id, note)"
               >Submit</v-btn
             >
           </v-container>

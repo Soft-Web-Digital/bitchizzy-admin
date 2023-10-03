@@ -111,8 +111,8 @@ export const useWithdrawalsStore = defineStore("withdrawals", {
               "user" +
               "&page=" +
               page_no +
-              // "&filter[status]=" +
-              // status +
+              "&filter=" +
+              status +
               "&per_page=100",
             {
               headers: {
@@ -159,8 +159,8 @@ export const useWithdrawalsStore = defineStore("withdrawals", {
               "user" +
               "&page=" +
               page_no +
-              // "&filter[status]=" +
-              // status +
+              "&filter=" +
+              status +
               "&per_page=100",
             {
               headers: {
@@ -203,7 +203,7 @@ export const useWithdrawalsStore = defineStore("withdrawals", {
               "user" +
               "&page=" +
               page_no +
-              "&filter[status]=" +
+              "&filter=" +
               status +
               "&per_page=100",
             {
@@ -336,10 +336,10 @@ export const useWithdrawalsStore = defineStore("withdrawals", {
 
       var formData = new FormData();
 
-      formData.append("_method", "PATCH");
+      formData.append("_method", "POST");
       try {
         await ksbTechApi
-          .post(withdrawals + "/" + id + "/approve", formData, {
+          .post(withdrawals + "/approve/" + id, formData, {
             headers: {
               Accept: "application/json",
               Authorization: `Bearer ${store.token}`,
@@ -401,7 +401,7 @@ export const useWithdrawalsStore = defineStore("withdrawals", {
                 text: res.data.message,
                 type: "success",
               });
-              this.getAllWithDrawals("pending", 1);
+              this.getAllTransactions("", 1);
               this.dialog = false;
             }
           );
@@ -424,7 +424,7 @@ export const useWithdrawalsStore = defineStore("withdrawals", {
       formData.append("note", note);
       try {
         await ksbTechApi
-          .patch(withdrawals + "/" + id + "/decline", formData, {
+          .post(withdrawals + "/decline/" + id, formData, {
             headers: {
               Accept: "application/json",
               Authorization: `Bearer ${store.token}`,
@@ -445,6 +445,48 @@ export const useWithdrawalsStore = defineStore("withdrawals", {
                 type: "success",
               });
               this.getAllWithDrawals("pending", 1);
+            }
+          );
+      } catch (error: any) {
+        this.disapproving = false;
+        this.dialog = false;
+        notify({
+          title: "An Error Occurred",
+          text: error.response.data.message,
+          type: "error",
+        });
+      }
+    },
+    async declineTransactionRequest(id: string, note: string) {
+      const store = useAuthStore();
+      const { notify } = useNotification();
+      this.disapproving = true;
+
+      var formData = new FormData();
+      formData.append("note", note);
+      try {
+        await ksbTechApi
+        .post(transaction + "/decline/" + id, formData, {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${store.token}`,
+            },
+          })
+          .then(
+            (res: {
+              data: {
+                message: string;
+                data: { withdrawal_requests: object };
+              };
+            }) => {
+              this.disapproving = false;
+              this.dialog = false;
+              notify({
+                title: "Successful",
+                text: res.data.message,
+                type: "success",
+              });
+              this.getAllTransactions("", 1);
             }
           );
       } catch (error: any) {

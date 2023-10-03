@@ -73,12 +73,12 @@ const sidebarItem: menu[] = [
     to: "/roles",
     permissions:"manage_access_control_list"
   },
-  {
-    title: "Referrals",
-    icon: "user-check",
-    to: "/referrals/all",
-    permissions:"manage_access_control_list"
-  },
+  // {
+  //   title: "Referrals",
+  //   icon: "user-check",
+  //   to: "/referrals/all",
+  //   permissions:"manage_access_control_list"
+  // },
 
   { header: "News & Updates", group_name:"notification" },
 
@@ -97,7 +97,7 @@ const sidebarItem: menu[] = [
   {
     title: "FAQ",
     icon: "help-circle",
-    to: "",
+    to: "/faq",
     permissions:"manage_system_data"
   },
   {
@@ -109,7 +109,7 @@ const sidebarItem: menu[] = [
   {
     title: "Referral Terms",
     icon: "user-plus",
-    to: "",
+    to: "/referral/terms/all",
     permissions:"manage_system_data"
   },
 
@@ -180,7 +180,7 @@ const sidebarItem: menu[] = [
     permissions:"manage_system_bank_accounts"
   },
   {
-    title: "Trading Settings",
+    title: "Trade Settings",
     icon: "trending-up",
     to: "/system-data",
     permissions:"manage_system_data"

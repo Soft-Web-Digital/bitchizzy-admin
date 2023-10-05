@@ -5,6 +5,13 @@ import ksbTechApi from "../../axios";
 import { useAuthStore } from "./auth";
 import { useRoute } from "vue-router";
 
+interface State {
+  system_data: any;
+  app_version: any;
+  singleProvider: any;
+  loading: boolean;
+}
+
 export const useNetworksStore = defineStore("networks", {
   state: () => ({
     loading: false,
@@ -16,6 +23,7 @@ export const useNetworksStore = defineStore("networks", {
       wallet_address: "",
     },
     system_data:[],
+    app_version:[],
     content:"",
     single_network:{}
   }),
@@ -288,7 +296,11 @@ export const useNetworksStore = defineStore("networks", {
                 text: res.data.message,
                 type: "success",
               });
-              this.system_data = res.data.data.system_data;
+              const networkData = res.data.data.system_data;
+
+              this.app_version = networkData.filter(item => item.code === 'IOSVU' || item.code === 'ANDVU');
+
+              this.system_data = networkData.filter(item => item.code !== 'IOSVU' && item.code !== 'ANDVU');
             }
           );
       } catch (error) {

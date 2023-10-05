@@ -233,6 +233,27 @@ const router = createRouter({
             import("@/views/faq/all.vue"),
             meta: { requiresAuth: true}
         },
+        {
+          name: "Providers",
+          path: "/service/providers",
+          component: () =>
+            import("@/views/provider/all.vue"),
+            meta: { requiresAuth: true}
+        },
+        {
+          name: "Services",
+          path: "/service/:id",
+          component: () =>
+            import("@/views/provider/service.vue"),
+            meta: { requiresAuth: true}
+        },
+        {
+          name: "App",
+          path: "/app-version",
+          component: () =>
+            import("@/views/app-version.vue"),
+            meta: { requiresAuth: true}
+        },
       ],
     },
     {

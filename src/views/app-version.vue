@@ -6,34 +6,31 @@ import { useNetworksStore } from "../stores/networks";
 import BaseBreadcrumb from "@/components/BaseBreadcrumb.vue";
 
 const { getAllSystemData, editSystemData } = useNetworksStore();
-const { system_data, loading, dialog, dialog2, content } = storeToRefs(
+const { app_version, loading, dialog, dialog2, content } = storeToRefs(
   useNetworksStore()
 );
 
 onMounted(async () => {
   await getAllSystemData();
-  
-  // system_data.value = system_data.value.filter(item => item.code !== 'IOSVU' && item.code !== 'ANDVU');
-
 });
 
-const page_title = ref({ title: "System data" });
+const page_title = ref({ title: "App Version" });
 const title = ref("");
 const header = ref([
-  {
+{
     title: "Id",
-  },
-  {
-    title: "Code",
-  },
-  {
-    title: "Content",
   },
   {
     title: "Title",
   },
   {
-    title: "Hint",
+    title: "Code",
+  },
+  {
+    title: "Description",
+  },
+  {
+    title: "Content",
   },
   {
     title: "Date created",
@@ -55,18 +52,6 @@ const status_color = (status: StatusType) => {
     ? "red lighten-3"
     : "";
 };
-//
-// VIEW WITHDRAWAL
-// const dialog = ref(false);
-// const fetching = ref(false);
-// const viewWithDrawalRequest = async (id: string) => {
-//   dialog.value = true;
-//   fetching.value = true;
-//   await getSingleWithDrawals(id);
-//   fetching.value = false;
-// };
-
-// const page = ref(21);
 
 const edit = ref(false);
 const Id = ref("");
@@ -102,14 +87,14 @@ const editItem = (item: string, id: string) => {
             </tr>
           </thead>
           <tbody v-if="loading == false">
-            <tr class="pa-3" v-for="(data, index) in system_data" :key="data?.id">
+            <tr class="pa-3" v-for="(data, index) in app_version" :key="data?.id">
               <td>{{ index + 1 }}</td>
               <td class="text-capitalize font-weight-bold">
-                {{ data?.code }}
+                {{ data?.title }}
               </td>
-              <td>{{ data?.content }}</td>
+              <td>{{ data?.code }}</td>
               <td>{{ data?.hint }}</td>
-              <td>{{ data?.title }}</td>
+              <td class="text-capitalize font-weight-bold">{{ data?.content }}</td>
               <td>
                 {{ useDateFormat(data?.created_at, "DD, MMMM-YYYY").value }}
               </td>

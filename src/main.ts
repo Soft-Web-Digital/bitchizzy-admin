@@ -19,6 +19,7 @@ import '@vuepic/vue-datepicker/dist/main.css'
 import { VueQueryPlugin } from "vue-query";
 
 import VueCookies from 'vue3-cookies';
+import { ToggleButton } from 'vue-js-toggle-button'
 
 
 const pinia = createPinia();
@@ -32,13 +33,12 @@ pinia.use(({ store }) => {
 const app = createApp(App)
 app.component(VueFeather.name, VueFeather);
 
-
-
 app.use(pinia);
 
 app.use(VueApexCharts);
 app.use(VueCookies);
 app.use(router);
+app.component('ToggleButton', ToggleButton);
 app.use(Notifications)
 app.use(vuetify).mount("#app");
 app.use(VueQueryPlugin)

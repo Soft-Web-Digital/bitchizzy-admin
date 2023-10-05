@@ -109,13 +109,13 @@ onMounted(async () => {
                 color="#34384f"
                 class="first-level-item mb-1"
               >
-                <template v-slot:prepend>
+                <!-- <template v-slot:prepend>
                   <vue-feather
                     v-if="all_permissions.includes(subitem?.permissions)"
                     type="disc"
                     class="feather-sm v-icon"
                   ></vue-feather>
-                </template>
+                </template> -->
                 <v-list-item-title
                   v-if="all_permissions.includes(subitem?.permissions)"
                   v-text="subitem.title"

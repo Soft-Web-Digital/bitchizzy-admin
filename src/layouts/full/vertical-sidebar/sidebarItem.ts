@@ -103,7 +103,7 @@ const sidebarItem: menu[] = [
   {
     title: "App Version",
     icon: "smartphone",
-    to: "",
+    to: "/app-version",
     permissions:"manage_system_data"
   },
   {
@@ -129,13 +129,13 @@ const sidebarItem: menu[] = [
 
       {
         title: "Categories",
-        icon: "",
+        // icon: "",
         to: "/giftcards/categories",
         permissions:"manage_giftcard_categories"
       },
       {
         title: "Products",
-        icon: "",
+        // icon: "",
         to: "/giftcards/products",
         permissions:"manage_giftcard_products"
       },
@@ -149,19 +149,19 @@ const sidebarItem: menu[] = [
 
       {
         title: "Networks",
-        icon: "",
+        // icon: "",
         to: "/networks/all",
         permissions:"manage_networks"
       },
       {
         title: "Assets",
-        icon: "",
+        // icon: "",
         to: "/assets/all",
         permissions:"manage_assets"
       },
       {
         title: "Currencies",
-        icon: "",
+        // icon: "",
         to: "/currencies/all",
         permissions:"manage_currencies"
       },
@@ -170,7 +170,7 @@ const sidebarItem: menu[] = [
   {
     title: "Service Provider",
     icon: "briefcase",
-    to: "",
+    to: "/service/providers",
     permissions:"manage_system_bank_accounts"
   },
   {

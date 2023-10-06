@@ -22,6 +22,7 @@ export const referrals = '/admin/referrals'
 export const faq = '/admin/faq'
 export const terms = '/admin/terms'
 export const providers = '/admin/providers'
+export const providerServices = '/admin/provider-service'
 
 
 export const giftCardCategory = '/admin/giftcard-categories'

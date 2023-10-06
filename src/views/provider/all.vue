@@ -153,10 +153,19 @@ const selected = ref(["John"]);
                 </td>
                 <td>
                   <v-switch
+                      v-if="data?.status == 'enabled'"
                       :color="data?.status == 'enabled' ? 'success' : 'secondry'"
-                      :value="data?.status === 'disabled' ? true : false"
+                      :value="data?.status"
                       v-model="data.status"
-                      @change="toggleProviders(data?.id, data?.status)">
+                      @change="toggleProviders(data?.id, 'disable')">
+                  </v-switch>
+
+                  <v-switch
+                      v-if="data?.status == 'disabled'"
+                      :color="data?.status == 'enabled' ? 'success' : 'secondry'"
+                      :value="false"
+                      v-model="data.status"
+                      @change="toggleProviders(data?.id, 'enable')">
                   </v-switch>
                 </td>
                 <td>

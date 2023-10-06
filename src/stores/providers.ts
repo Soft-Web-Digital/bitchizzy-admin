@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import ksbTechApi from "../../axios-services";
-import { providers } from "../../apiRoute";
+import { providers, providerServices } from "../../apiRoute";
 import { useNotification } from "@kyvg/vue3-notification";
 import { useAuthStore } from "./auth";
 import { useRoute } from "vue-router";
@@ -261,63 +261,89 @@ interface Data {
         },
 
         async toggleProviders(id: string, status: any) {
-          // const store = useAuthStore();
-          // var formData = new FormData();
+          const store = useAuthStore();
+          var formData = new FormData();
 
-          // formData.append("status", status);
-          // formData.append("_method", "PUT");
-
-          const statusX = status == "true" ?  "disabled" : "enabled"
-
-          console.log(statusX + " : " + status);
-          
-
-          // if(status == 'false')
-          // {
-          //   const statusX = 'disable'
-          //   console.log(statusX + " : " + status);
-          // } else if(status == 'true') {
-          //   const statusX = 'enable'
-          //   console.log(statusX + " : " + status);
-          // }
+          formData.append("_method", "PUT");
       
-          // this.loading = true;
-
-          // const statusX = status == 'enabled' ?  "disabled" : "enabled"
+          this.loading = true;
       
-          // const { notify } = useNotification();
-          // try {
-          //   await ksbTechApi
-          //     .post(providers + "/" + id + "/" + statusX, formData, {
-          //       headers: {
-          //         Accept: "application/json",
-          //         Authorization: `Bearer ${store.token}`,
-          //       },
-          //     })
-          //     .then(
-          //       (res: {
-          //         data: {
-          //           message: string;
-          //         };
-          //       }) => {
-          //         this.loading = false;
-          //         notify({
-          //           title: "Successful",
-          //           text: res.data.message,
-          //           type: "success",
-          //         });
-          //         this.getProviders();
-          //         this.dialog = false
-          //       }
-          //     );
-          // } catch (error:any) {
-          //   this.loading = false;
-          //   notify({
-          //     title: "An Error Occurred",
-          //     text: error.response.data.message,
-          //     type: "error",
-          //   });
-          // }
+          const { notify } = useNotification();
+          try {
+            await ksbTechApi
+              .post(providers + "/" + id + "/" + status, formData, {
+                headers: {
+                  Accept: "application/json",
+                  Authorization: `Bearer ${store.token}`,
+                },
+              })
+              .then(
+                (res: {
+                  data: {
+                    message: string;
+                  };
+                }) => {
+                  this.loading = false;
+                  notify({
+                    title: "Successful",
+                    text: res.data.message,
+                    type: "success",
+                  });
+                  this.getProviders();
+                  this.dialog = false
+                }
+              );
+          } catch (error:any) {
+            this.loading = false;
+            notify({
+              title: "An Error Occurred",
+              text: error.response.data.message,
+              type: "error",
+            });
+          }
+        },
+
+        async toggleServices(id: string, status: any) {
+          const store = useAuthStore();
+          var formData = new FormData();
+
+          formData.append("_method", "PUT");
+      
+          this.loading = true;
+      
+          const { notify } = useNotification();
+          try {
+            await ksbTechApi
+              .post(providerServices + "/" + id + "/" + status, formData, {
+                headers: {
+                  Accept: "application/json",
+                  Authorization: `Bearer ${store.token}`,
+                },
+              })
+              .then(
+                (res: {
+                  data: {
+                    message: string;
+                  };
+                }) => {
+                  this.loading = false;
+                  notify({
+                    title: "Successful",
+                    text: res.data.message,
+                    type: "success",
+                  });
+                  this.getProviders();
+                  this.dialog = false
+                }
+              );
+          } catch (error:any) {
+            this.loading = false;
+            notify({
+              title: "An Error Occurred",
+              text: error.response.data.message,
+              type: "error",
+            });
+          }
         },
     }
 

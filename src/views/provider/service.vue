@@ -22,11 +22,14 @@ export default defineComponent({
         title: "Status",
       },
       {
-        title: "Date",
+        title: "Toggle Status",
       },
       {
-        title: "Actions",
+        title: "Date",
       },
+      // {
+      //   title: "Actions",
+      // },
     ]);
 
     const note = ref("");
@@ -46,6 +49,7 @@ export default defineComponent({
     const {
         getProviders,
         getSingleProviders,
+        toggleServices,
     } = useProviderStore();
 
     const formate_text = (text: string) => {
@@ -253,6 +257,7 @@ export default defineComponent({
       uploadingImage,
       removeImage,
       removeImageDecline,
+      toggleServices,
       confirmationID,
       confirmationDialog,
       confirmationStatus,
@@ -276,7 +281,7 @@ export default defineComponent({
       </v-btn>
       <div class="mb-5 md-mb-0 d-md-flex justify-space-between">
         <h2 class="my-5 text-capitalize username">{{ singleProvider.name }} Service:</h2>
-        <v-card-actions class="d-flex flex-wrap align-start" style="gap: 10px; padding: 0% !important;">
+        <!-- <v-card-actions class="d-flex flex-wrap align-start" style="gap: 10px; padding: 0% !important;">
           <v-btn
             class="mr-2 md-mr-4"
             color="green lighten-3"
@@ -290,7 +295,7 @@ export default defineComponent({
           <v-btn color="red lighten-3" variant="tonal" @click="disapproveAll()">
             Disable
           </v-btn>
-        </v-card-actions>
+        </v-card-actions> -->
       </div>
   
       <v-table>
@@ -320,9 +325,26 @@ export default defineComponent({
               >
             </td>
             <td>
-                {{ useDateFormat(data?.created_at, 'DD, MMMM-YYYY').value }}
+              <v-switch
+                  v-if="data?.status == 'enabled'"
+                  :color="data?.status == 'enabled' ? 'success' : 'secondry'"
+                  :value="data?.status"
+                  v-model="data.status"
+                  @change="toggleServices(data?.id, 'disable')">
+              </v-switch>
+
+              <v-switch
+                  v-if="data?.status == 'disabled'"
+                  :color="data?.status == 'enabled' ? 'success' : 'secondry'"
+                  :value="false"
+                  v-model="data.status"
+                  @change="toggleServices(data?.id, 'enable')">
+              </v-switch>
             </td>
             <td>
+                {{ useDateFormat(data?.created_at, 'DD, MMMM-YYYY').value }}
+            </td>
+            <!-- <td>
               <v-row justify="center">
                 <v-menu transition="scroll-y-transition">
                   <template v-slot:activator="{ props }">
@@ -369,7 +391,7 @@ export default defineComponent({
                   </v-list>
                 </v-menu>
               </v-row>
-            </td>
+            </td> -->
           </tr>
         </tbody>
       </v-table>

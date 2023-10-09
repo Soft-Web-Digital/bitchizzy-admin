@@ -23,6 +23,7 @@ export const faq = '/admin/faq'
 export const terms = '/admin/terms'
 export const providers = '/admin/providers'
 export const providerServices = '/admin/provider-service'
+export const settings = '/admin/update-service-charges'
 
 
 export const giftCardCategory = '/admin/giftcard-categories'

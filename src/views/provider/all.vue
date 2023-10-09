@@ -154,7 +154,7 @@ const selected = ref(["John"]);
                 <td>
                   <v-switch
                       v-if="data?.status == 'enabled'"
-                      :color="data?.status == 'enabled' ? 'success' : 'secondry'"
+                      :color="data?.status == 'enabled' ? 'black' : 'secondry'"
                       :value="data?.status"
                       v-model="data.status"
                       @change="toggleProviders(data?.id, 'disable')">
@@ -162,7 +162,7 @@ const selected = ref(["John"]);
 
                   <v-switch
                       v-if="data?.status == 'disabled'"
-                      :color="data?.status == 'enabled' ? 'success' : 'secondry'"
+                      :color="data?.status == 'enabled' ? 'black' : 'secondry'"
                       :value="false"
                       v-model="data.status"
                       @change="toggleProviders(data?.id, 'enable')">

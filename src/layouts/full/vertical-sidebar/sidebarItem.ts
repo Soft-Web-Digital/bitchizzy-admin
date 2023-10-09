@@ -176,7 +176,7 @@ const sidebarItem: menu[] = [
   {
     title: "Service Settings",
     icon: "settings",
-    to: "",
+    to: "/settings",
     permissions:"manage_system_bank_accounts"
   },
   {

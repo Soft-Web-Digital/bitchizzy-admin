@@ -332,7 +332,9 @@ interface Data {
                     text: res.data.message,
                     type: "success",
                   });
-                  this.getSingleProviders(id);
+                  
+                  location.reload();
+
                   this.dialog = false
                 }
               );

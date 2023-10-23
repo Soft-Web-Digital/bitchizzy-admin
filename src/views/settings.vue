@@ -393,21 +393,41 @@ const getGiftIcon = (e: any) => {
 };
 
 const getModalList = (listName: string, name: string) => {
-    const list = eval(listName);
+  btnValue.value = name;
 
-    btnValue.value = name;
+  switch (listName) {
+    case 'servicesList':
+      modalData.value = [...servicesList.value]; // Create a copy of the array
+      break;
+    case 'smeList':
+      modalData.value = [...smeList.value];
+      break;
+    case 'discountList':
+      modalData.value = [...discountList.value];
+      break;
+    case 'referralList':
+      modalData.value = [...referralList.value];
+      break;
+    case 'cgList':
+      modalData.value = [...cgList.value];
+      break;
+    case 'airtimeList':
+      modalData.value = [...airtimeList.value];
+      break;
+    case 'dataList':
+      modalData.value = [...dataList.value];
+      break;
+    case 'limitList':
+      modalData.value = [...limitList.value];
+      break;
+    default:
+      modalData.value = []; // Set modalData to an empty array if none of the cases match
+      break;
+  }
 
-    switch (list) {
-        case list:
-          console.log(list.value);
-          modalData.value = list.value;
-          break;
-        default:
-          break;
-      }
-    
-      dialog.value = true
+  dialog.value = true;
 };
+
 </script>
 
 <template>

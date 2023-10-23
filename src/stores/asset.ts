@@ -41,6 +41,7 @@ interface State {
   page: number;
   tab: string;
   status: string;
+  usd_rate: string;
 }
 
 export const useAssetStore = defineStore("asset", {
@@ -69,7 +70,8 @@ export const useAssetStore = defineStore("asset", {
     asset_details: {},
     page: 1,
     tab: null,
-    status: ""
+    status: "",
+    usd_rate: "",
   }),
   getters: {
     allTransactions: (state) => state.all_transactions,
@@ -792,6 +794,35 @@ export const useAssetStore = defineStore("asset", {
       } catch (error) {
         this.loading = false;
       }
-    }
+    },
+
+    async getUSDRate() {
+      try {
+        this.loading = true;
+        await ksbTechApi
+          .get('/currencies?filter[code]=USD', {
+            headers: {
+              Accept: 'application/json'
+            }
+          })
+          .then(
+            (res: {
+              data: {
+                message: string;
+                data: any;
+              };
+            }) => {
+              this.loading = false;
+
+              const currencies = res.data.data.currencies.data;
+              if (currencies.length > 0) {
+                this.usd_rate = currencies[0];
+              }
+            }
+          );
+      } catch (error) {
+        this.loading = false;
+      }
+    },
   }
 });

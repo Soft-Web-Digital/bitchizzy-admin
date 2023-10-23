@@ -21,13 +21,14 @@ const {
   loading,
   singleWithdrawal,
   dialog,
+  dialog2,
   disapproving,
   approving,
   withdrawals_total,
   total_withdrawal
 } = storeToRefs(useWithdrawalsStore());
 const status = ref("");
-const dialog2 = ref(false);
+// const dialog2 = ref(false);
 
 const fetchData = async () => {
   await getAllWithDrawals(status.value, 1);
@@ -97,12 +98,20 @@ const formatCurrency = (value: any) => {
 };
 
 const id = ref("");
+
 const disapprove = () => {
-  if (dialog.value == true) {
-    dialog.value = false;
+  if (dialog2.value == true) {
+    dialog2.value = false;
+  } else {
+    dialog2.value = true;
   }
-  dialog2.value = true;
 };
+
+const singleData = ref<any>(null);
+
+const getSingle = (data: any) =>  {
+  singleData.value = data
+}
 
 const status_options = ref(["Pending", "Completed", "Declined", "Success"]);
 
@@ -265,7 +274,7 @@ const tab = ref(null);
                 </td>
                 <td>₦‎ {{ withdrawal.amount.toLocaleString() }}</td>
                 <td>{{ withdrawal?.meta?.account_number ?? "---" }}</td>
-                <td>{{ withdrawal?.meta?.bank_name ?? "---" }}</td>
+                <td>{{ withdrawal?.meta?.bank?.name ?? "---" }}</td>
                 <td>
                   {{
                     useDateFormat(withdrawal?.created_at, "DD, MMMM-YYYY").value
@@ -300,16 +309,13 @@ const tab = ref(null);
                         </v-btn>
                       </template>
                       <v-list>
-                        <!-- <v-list-item
-                          :to="{
-                            name: 'viewWithdrawals',
-                            params: { id: withdrawal.id },
-                          }"
+                        <v-list-item
+                          @click="getSingle(withdrawal), dialog = true"
                           link
                           color="secondary"
                         >
                           <v-list-item-title> View Details </v-list-item-title>
-                        </v-list-item> -->
+                        </v-list-item>
                         <v-list-item
                           v-if="withdrawal?.status == 'pending'"
                           @click="approveRequest(withdrawal?.reference)"
@@ -392,8 +398,8 @@ const tab = ref(null);
               size="small"
               density="comfortable"
               class="text-capitalize font-weight-bold pa-3"
-              :color="status_color(singleWithdrawal?.status)"
-              >{{ singleWithdrawal?.status }}</v-chip
+              :color="status_color(singleData?.status)"
+              >{{ singleData?.status }}</v-chip
             >
           </div>
         </div>
@@ -414,7 +420,7 @@ const tab = ref(null);
                   <h5>Wallet balance</h5>
                   <p class="font-weight-bold">
                     ₦‎{{
-                      singleWithdrawal?.user?.wallet_balance.toLocaleString()
+                      singleData?.balance_after.toLocaleString()
                     }}
                   </p>
                 </div>
@@ -424,7 +430,8 @@ const tab = ref(null);
                 <div>
                   <h5 class="">User name</h5>
                   <p class="">
-                    {{ singleWithdrawal?.user?.first_name }}
+                    {{ singleData?.user?.firstname }}
+                    {{ singleData?.user?.lastname }}
                   </p>
                 </div>
               </div>
@@ -434,7 +441,7 @@ const tab = ref(null);
                 <div>
                   <h5 class="">Email address</h5>
                   <p class="">
-                    {{ singleWithdrawal?.user?.email }}
+                    {{ singleData?.user?.email }}
                   </p>
                 </div>
               </div>
@@ -446,7 +453,7 @@ const tab = ref(null);
                   <p class="">
                     {{
                       useDateFormat(
-                        singleWithdrawal?.created_at,
+                        singleData?.created_at,
                         "DD, MMMM-YYYY"
                       ).value
                     }}
@@ -467,7 +474,7 @@ const tab = ref(null);
                 <div>
                   <h5>Amount</h5>
                   <p class="font-weight-bold">
-                    ₦‎{{ singleWithdrawal?.amount?.toLocaleString() }}
+                    ₦‎{{ singleData?.amount?.toLocaleString() }}
                   </p>
                 </div>
               </div>
@@ -476,7 +483,7 @@ const tab = ref(null);
                 <div>
                   <h5 class="">Bank name</h5>
                   <p class="">
-                    {{ singleWithdrawal?.bank?.name ?? "No data" }}
+                    {{ singleData?.meta?.bank?.name ?? "No data" }}
                   </p>
                 </div>
               </div>
@@ -486,7 +493,7 @@ const tab = ref(null);
                 <div>
                   <h5 class="">Account name</h5>
                   <p class="">
-                    {{ singleWithdrawal?.account_name ?? "No data" }}
+                    {{ singleData?.meta?.account_name ?? "No data" }}
                   </p>
                 </div>
               </div>
@@ -495,7 +502,7 @@ const tab = ref(null);
                 <div>
                   <h5 class="">Account number</h5>
                   <p class="">
-                    {{ singleWithdrawal?.account_number ?? "No data" }}
+                    {{ singleData?.meta?.account_number ?? "No data" }}
                   </p>
                 </div>
               </div>
@@ -536,11 +543,9 @@ const tab = ref(null);
       </v-card>
     </v-dialog>
 
-    <v-expand-transition>
       <v-dialog
         v-if="dialog2"
         v-model="dialog2"
-        activator="parent"
         max-width="500px"
         width="auto"
       >
@@ -560,13 +565,13 @@ const tab = ref(null);
               color="secondary"
               class="my-5"
               block
+              :loading="disapproving"
               @click="declineRequest(id, note)"
               >Submit</v-btn
             >
           </v-container>
         </v-card>
       </v-dialog>
-    </v-expand-transition>
   </div>
 </template>
 

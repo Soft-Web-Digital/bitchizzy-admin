@@ -374,7 +374,8 @@ watch([dialog, dialog2], ([newDialog, oldDialog], [newDialog2, oldDialog2]) => {
                   }}</strong>
                 </td>
                 <td>{{ singleGiftCardTransaction?.rate }}</td>
-                <td>{{ singleGiftcardUnit }}</td>
+                <td v-if="singleGiftcardUnit == 0">1</td>
+                <td v-else>{{ singleGiftcardUnit }}</td>
                 <td>1</td>
               </tr>
             </tbody>
@@ -457,16 +458,20 @@ watch([dialog, dialog2], ([newDialog, oldDialog], [newDialog2, oldDialog2]) => {
 
                 <div class="font-weight-normal mb-4">
                   <strong>Last Updated:</strong>
-                  {{
+                  <span v-if="singleGiftCardTransaction?.status !== 'pending'"> {{
                     useDateFormat(
                       singleGiftCardTransaction?.updated_at,
                       "DD, MMM YYYY - hh:mm a"
                     ).value
-                  }}
+                  }}</span>
+                  <span v-else>
+                    No data
+                  </span>
+
                 </div>
                 <div class="mb-4">
                   <strong>Comments:</strong>
-                  {{ singleGiftCardTransaction?.comment }}
+                  {{ singleGiftCardTransaction?.comment || 'No comment'}}
                 </div>
               </v-card-text>
 
@@ -540,7 +545,7 @@ watch([dialog, dialog2], ([newDialog, oldDialog], [newDialog2, oldDialog2]) => {
                     >
                   </p>
                 </div>
-                <div class="font-weight-normal mb-4">
+                <!-- <div class="font-weight-normal mb-4">
                   <strong>Review Rate:</strong>
                   {{
                     formatCurrency(
@@ -555,7 +560,7 @@ watch([dialog, dialog2], ([newDialog, oldDialog], [newDialog2, oldDialog2]) => {
                     formatCurrency(singleGiftCardTransaction.review_amount) ??
                     "No data"
                   }}
-                </div>
+                </div> -->
                 <div class="font-weight-normal mb-4">
                   <strong>Review At: </strong>
                   <span v-if="singleGiftCardTransaction.reviewed_at">

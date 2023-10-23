@@ -15,9 +15,10 @@ const {
   approveAssetTransactions,
   declineAssetTransactions,
   partialApproveRequest,
+  getUSDRate,
 } = useAssetStore();
 
-const { dialog, loading, single_transactions, dialog2 } = storeToRefs(
+const { dialog, loading, single_transactions, dialog2, usd_rate } = storeToRefs(
   useAssetStore()
 );
 
@@ -38,7 +39,10 @@ const transaction_header = ref([
     title: "Asset value",
   },
   {
-    title: "Amount",
+    title: "Payable Amount",
+  },
+  {
+    title: "Amount in USD",
   },
 ]);
 
@@ -119,6 +123,10 @@ const partial = ($event: any) => {
 
 onMounted(async () => {
   await getSingleAssetTransactions(route.params.id);
+
+  getUSDRate();
+
+  console.log(usd_rate);
 });
 
 const reviewVisibleRef = ref(false);
@@ -244,9 +252,17 @@ watch([dialog, dialog2], ([newDialog, oldDialog], [newDialog2, oldDialog2]) => {
               <td>{{single_transactions?.asset?.code}}</td>
               <td>{{single_transactions?.network?.name}}</td>
               <td>{{single_transactions?.trade_type}}</td>
-              <td>{{single_transactions?.rate}}</td>
+              <td>${{formatNumber(single_transactions?.rate)}}</td>
               <td>{{single_transactions?.asset?.code}} <strong>{{ single_transactions.asset_amount }}</strong></td>
-              <td>{{formatCurrency(single_transactions?.payable_amount)}}</td>
+              <td>{{formatCurrency(single_transactions?.payable_amount * usd_rate.sell_rate)}}</td>
+              <td>
+                <span v-if="single_transactions?.trade_type == 'sell'">
+                    ${{ formatNumber(single_transactions.payable_amount + single_transactions.service_charge ) }}
+                  </span>
+                  <span v-else>
+                    ${{ formatNumber(single_transactions.payable_amount) }}
+                  </span>
+              </td>
             </tr>
           </tbody>
         </v-table>
@@ -298,8 +314,8 @@ watch([dialog, dialog2], ([newDialog, oldDialog], [newDialog2, oldDialog2]) => {
                   >
                 </v-row>
                 <div class="mb-5">
-                  <strong>Buy rate:</strong>
-                  {{ single_transactions?.asset?.buy_rate }}
+                  <strong>Asset {{ single_transactions?.trade_type }} rate:</strong>
+                  ${{ formatNumber(single_transactions?.rate) }} 
                 </div>
                 <div class="mb-4">
                 <strong>Comment:</strong>
@@ -307,7 +323,18 @@ watch([dialog, dialog2], ([newDialog, oldDialog], [newDialog2, oldDialog2]) => {
                 </div>
                 <div class="font-weight-normal mb-4">
                   <strong>Payable Amount:</strong>
-                  {{ formatCurrency(single_transactions.payable_amount) }}
+                  
+                  {{ formatCurrency(single_transactions.payable_amount * usd_rate.sell_rate) }}
+                </div>
+                <div class="font-weight-normal mb-4">
+                  <strong>Amount in USD:</strong>
+                  <span v-if="single_transactions?.trade_type == 'sell'">
+                    ${{ formatNumber(single_transactions.payable_amount + single_transactions.service_charge ) }}
+                  </span>
+                  <span v-else>
+                    ${{ formatNumber(single_transactions.payable_amount - single_transactions.service_charge) }}
+                  </span>
+                  
                 </div>
                 <div class="font-weight-normal mb-4">
                   <strong>Asset Value:</strong>
@@ -315,11 +342,22 @@ watch([dialog, dialog2], ([newDialog, oldDialog], [newDialog2, oldDialog2]) => {
                 </div> 
                 <div class="font-weight-normal mb-4">
                   <strong>Service Charge:</strong>
-                  {{ formatCurrency(((single_transactions.service_charge / 100) * single_transactions.asset_amount) * single_transactions.rate) }}
+                  <span v-if="single_transactions?.trade_type == 'sell'">
+                    - {{ formatCurrency((((single_transactions.service_charge / 100) * single_transactions.asset_amount) * single_transactions.rate) * usd_rate.sell_rate) }} ({{ formatNumber((((single_transactions.service_charge / 100) * single_transactions.asset_amount) * single_transactions.rate)) }}%)
+                  </span>
+                  <span v-else>
+                    + {{ formatCurrency((((single_transactions.service_charge / 100) * single_transactions.asset_amount) * single_transactions.rate) * usd_rate.buy_rate) }} ({{ formatNumber((((single_transactions.service_charge / 100) * single_transactions.asset_amount) * single_transactions.rate)) }}%)
+                  </span>
+                  
                 </div>
                 <div class="font-weight-normal mb-4">
-                  <strong>Rate:</strong>
-                  &#x20A6{{ single_transactions.rate }}
+                  <strong>USD Rate:</strong>
+                  <span v-if="single_transactions?.trade_type == 'sell'">
+                    {{ formatNumber(usd_rate.sell_rate) }}
+                  </span>
+                  <span v-else>
+                    {{ formatNumber(usd_rate.buy_rate) }}
+                  </span>
                 </div>
                 <div class="font-weight-normal mb-4">
                   <strong>Date Created:</strong>
@@ -329,11 +367,17 @@ watch([dialog, dialog2], ([newDialog, oldDialog], [newDialog2, oldDialog2]) => {
                       ).value }}
                 </div>
                 <div class="font-weight-normal mb-4">
-                  <strong>Last Updated:</strong>
-                  {{ useDateFormat(
+                  <strong>Last Updated: </strong>
+                  <span v-if="single_transactions?.status == 'approved' || single_transactions?.status == 'declined'">
+                    {{ useDateFormat(
                         single_transactions?.updated_at,
                         "DD, MMMM-YYYY hh:mm a"
                       ).value }}
+                  </span>
+                  <span v-else>
+                    No data
+                  </span>
+                  
                 </div>
               </v-card-text>
               <v-divider v-if="single_transactions.status === 'transferred'" class="mx-4 mb-1"></v-divider>
@@ -377,14 +421,14 @@ watch([dialog, dialog2], ([newDialog, oldDialog], [newDialog2, oldDialog2]) => {
                   <p class="my-1">Email: <span class="font-weight-bold">{{ single_transactions?.reviewer?.email ?? 'No data'}}</span></p>
                   <p>Full name: <span class="font-weight-bold">{{ single_transactions?.reviewer?.firstname }}  {{ single_transactions?.reviewer?.lastname}}</span></p>
                 </div>
-                <div class="font-weight-normal mb-4">
+                <!-- <div class="font-weight-normal mb-4">
                   <strong>Review amount:</strong>
                   {{ formatCurrency(single_transactions.review_amount) }}
                 </div> 
                 <div class="font-weight-normal mb-4">
                   <strong>Review rate:</strong>
                   {{ formatCurrency(single_transactions.review_amount / single_transactions.asset_amount) }}
-                </div> 
+                </div>  -->
                 <div class="font-weight-normal">
                   <strong>Review At: </strong>
                   <span v-if="single_transactions.reviewed_at">
@@ -449,7 +493,7 @@ watch([dialog, dialog2], ([newDialog, oldDialog], [newDialog2, oldDialog2]) => {
                 </div>
               </v-card-text>
             </v-card>
-            <v-card>
+            <v-card v-if="single_transactions?.trade_type == 'sell'">
               <v-card-title>Bank Information</v-card-title>
               <v-divider></v-divider>
               <v-card-text>
@@ -464,6 +508,16 @@ watch([dialog, dialog2], ([newDialog, oldDialog], [newDialog2, oldDialog2]) => {
                 <div class="font-weight-normal mb-4">
                   <strong>Account number:</strong>
                   {{ single_transactions?.account_number ?? ' No account number'}}
+                </div>
+              </v-card-text>
+            </v-card>
+            <v-card v-if="single_transactions?.trade_type == 'buy'">
+              <v-card-title>Wallet Information</v-card-title>
+              <v-divider></v-divider>
+              <v-card-text>
+                <div class="font-weight-normal mb-4">
+                  <strong>Wallet Address:</strong>
+                  {{ single_transactions.wallet_address ?? ' No Address'}}
                 </div>
               </v-card-text>
             </v-card>

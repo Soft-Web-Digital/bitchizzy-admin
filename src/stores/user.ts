@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import ksbTechApi from "../../axios";
+import ksbTechServicesAPI from "../../axios-services";
 import { user, admin } from "../../apiRoute";
 import { useAuthStore } from "../stores/auth";
 import downloadFile from "@/composables/filedownloader";
@@ -154,9 +155,9 @@ export const useUserStore = defineStore("user", {
       const { notify } = useNotification();
       this.loading = true;
       try {
-        await ksbTechApi
+        await ksbTechServicesAPI
           .get(
-            "admin/referrals?" + "include=referred" + "&filter[user_id]=" + id,
+            "/admin/referrals/all?" + "include=referred" + "&filter[user_id]=" + id,
             {
               headers: {
                 Accept: "application/json",

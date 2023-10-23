@@ -273,8 +273,8 @@ const restoreItem = async (id: string) => {
                 {{ item.name ?? "No name" }}
               </td>
               <td>{{ item.code }}</td>
-              <td>₦‎{{ item.buy_rate }}</td>
-              <td>₦‎{{ item.sell_rate }}</td>
+              <td>${{ item?.buy_rate }}</td>
+              <td>${{ item?.sell_rate }}</td>
               <td>
                 {{ useDateFormat(item?.created_at, "DD, MMMM-YYYY hh:mm a").value }}
               </td>

@@ -21,6 +21,7 @@ interface State {
   approving: boolean;
   singleWithdrawal: any;
   dialog: boolean;
+  dialog2: boolean;
 
   all_transaction: any;
   transactions: any;
@@ -36,6 +37,7 @@ export const useWithdrawalsStore = defineStore("withdrawals", {
     approving: false,
     singleWithdrawal: {},
     dialog: false,
+    dialog2: false,
     transactions: {},
     all_transaction: {},
     total_withdrawal: {},
@@ -358,7 +360,7 @@ export const useWithdrawalsStore = defineStore("withdrawals", {
                 text: res.data.message,
                 type: "success",
               });
-              this.getAllWithDrawals("pending", 1);
+              this.getAllWithDrawals("", 1);
               this.dialog = false;
             }
           );
@@ -424,7 +426,7 @@ export const useWithdrawalsStore = defineStore("withdrawals", {
       formData.append("note", note);
       try {
         await ksbTechApi
-          .post(withdrawals + "/decline/" + id, formData, {
+          .post(withdrawals + "/decline/" + id + '?reverse=true', formData, {
             headers: {
               Accept: "application/json",
               Authorization: `Bearer ${store.token}`,
@@ -438,13 +440,14 @@ export const useWithdrawalsStore = defineStore("withdrawals", {
               };
             }) => {
               this.disapproving = false;
-              this.dialog = false;
               notify({
                 title: "Successful",
                 text: res.data.message,
                 type: "success",
               });
-              this.getAllWithDrawals("pending", 1);
+              this.getAllWithDrawals("", 1);
+              this.dialog = false;
+              this.dialog2 = false;
             }
           );
       } catch (error: any) {

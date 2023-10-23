@@ -674,7 +674,7 @@ export default defineComponent({
         : status == "declined"
         ? "red lighten-3"
         : status == "partially_approved"
-        ? "purple lighten-3"
+        ? "green lighten-3"
         : "";
     };
 

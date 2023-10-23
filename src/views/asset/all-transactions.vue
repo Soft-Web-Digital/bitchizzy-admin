@@ -26,6 +26,7 @@ const {
   getAllAssetTransactionByReference,
   getAllAssetTransactionByDate,
   partialApproveRequest,
+  getUSDRate,
 } = useAssetStore();
 
 let uploadingImage = ref<boolean>(false);
@@ -68,6 +69,7 @@ const {
   page,
   tab,
   status,
+  usd_rate,
 } = storeToRefs(useAssetStore());
 // const page = ref(1);
 
@@ -130,7 +132,7 @@ const fetchData = async () => {
 let intervalId = ref<any>(null);
 onMounted(() => {
   fetchData();
-  intervalId.value = setInterval(fetchData, 120000); // 120000 milliseconds = 2 minutes
+  getUSDRate();
 });
 
 // Clear the interval on unmount
@@ -462,7 +464,8 @@ watch([dialog, dialog2], ([newDialog, oldDialog], [newDialog2, oldDialog2]) => {
                 {{ item.user?.lastname }}
               </td>
               <td>{{ item.reference }}</td>
-              <td>₦‎{{ item.payable_amount.toLocaleString() }}</td>
+              <td v-if="item.trade_type == 'buy'">₦‎{{ (item.payable_amount * usd_rate.buy_rate).toLocaleString() }}</td>
+              <td v-else>₦‎{{ (item.payable_amount * usd_rate.sell_rate).toLocaleString() }}</td>
               <td>
                 {{
                   useDateFormat(item?.created_at, "DD, MMMM-YYYY hh:mm a").value

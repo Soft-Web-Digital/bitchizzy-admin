@@ -75,76 +75,76 @@ const providers_header = ref([
           list: "cgList",
           color: "success"
         },
-        {
-          profile: "twitch",
-          name: "Airtime Discount",
-          list: "airtimeList",
-          color: "black"
-        },
-        {
-          profile: "wind",
-          name: "Data Discount",
-          list: "dataList",
-          color: "orange"
-        },
-        {
-          profile: "settings",
-          name: "Limit Fees",
-          list: "limitList",
-          color: "pink"
-        },
+        // {
+        //   profile: "twitch",
+        //   name: "Airtime Discount",
+        //   list: "airtimeList",
+        //   color: "black"
+        // },
+        // {
+        //   profile: "wind",
+        //   name: "Data Discount",
+        //   list: "dataList",
+        //   color: "orange"
+        // },
+        // {
+        //   profile: "settings",
+        //   name: "Limit Fees",
+        //   list: "limitList",
+        //   color: "pink"
+        // },
       ])
 
     const  servicesList = ref([
         {
-          name: "Wallet Topup Charge",
+          name: "Wallet Topup Charge (₦)",
           model: "wallet_topup"
         },
         {
-          name: "Airtime Service Charge",
+          name: "Airtime Service Charge (₦)",
           model: "airtime_topup"
         },
         {
-          name: "Data Service Charge",
+          name: "Data Service Charge (₦)",
           model: "data_topup"
         },
         {
-          name: "Utility Bills charge",
+          name: "Utility Bills charge (₦)",
           model: "utility_topup"
         },
         {
-          name: "Tv subscription service charg",
+          name: "Tv subscription service charg (₦)",
           model: "tvsubscription_topup"
         },
         {
-          name: "E-pin service charge",
+          name: "E-pin service charge (₦)",
           model: "epin_topup"
         },
         {
-          name: "Wallet transfer charge",
+          name: "Wallet transfer charge (₦)",
           model: "wallet_transfer_topup"
         },
         {
-          name: "Withdrawal service charge",
+          name: "Withdrawal service charge (₦)",
           model: "withdrawal_topup"
         },
         {
-          name: "Game subscription charge",
+          name: "Game subscription charge (₦)",
           model: "games_charge"
         },
       ])
 
     const  smeList = ref([
         {
-          name: "MTN SME Topup",
+          name: "MTN SME Topup (₦)",
           model: "mtn_sme_topup"
         },
         {
-          name: "GLO SME/CG Topup",
+          name: "GLO SME/CG Topup (₦)",
           model: "glo_cg_topup"
         },
         {
-          name: "AIRTEL SME/CG Topup",
+          name: "AIRTEL SME/CG Topup (₦)",
           model: "airtel_cg_topup"
         },
       ])
@@ -178,38 +178,38 @@ const providers_header = ref([
 
     const  referralList  = ref([
         {
-          name: "Referral Commission",
+          name: "Referral Commission (₦)",
           model: "referral_commission"
         },
         {
-          name: "Referral Minimum Top Up",
+          name: "Referral Minimum Top Up (₦)",
           model: "referral_minimum_top_up"
         },
       ])
 
     const  cgList  = ref([
         {
-          name: "MTN CG Charge",
+          name: "MTN CG Charge (₦)",
           model: "mtn_cg_charge"
         },
         {
-          name: "MTN CG Data Discount",
+          name: "MTN CG Data Discount (%)",
           model: "mtn_cg_data_discount"
         },
+        // {
+        //   name: "MTN Data Card Charge (₦)",
+        //   model: "mtn_data_card_charge"
+        // },
         {
-          name: "MTN Data Card Charge",
-          model: "mtn_data_card_charge"
-        },
-        {
-          name: "MTN Data Card Discount",
+          name: "MTN Data Card Discount (%)",
           model: "mtn_data_card_discount"
         },
         {
-          name: "9Mobile SME service charge",
+          name: "9Mobile SME service charge (₦)",
           model: "ninemobile_sme_charge"
         },
         {
-          name: "9Mobile SME data discount",
+          name: "9Mobile SME data discount (%)",
           model: "ninemobile_sme_discount"
         },
       ])
@@ -306,24 +306,9 @@ const providers_header = ref([
         mtn_data_card_discount: 0,
         ninemobile_sme_charge: 0,
         ninemobile_sme_discount: 0,
+    },
 
-        mtn_airtime_discount:90,
-        glo_airtime_discount:0,
-        airtel_airtime_discount:0,
-        etisalat_airtime_discount:0,
-        mtn_data_discount:0,
-        airtel_data_discount:0,
-        etisalat_data_discount:0,
-        glo_data_discount:0, 
-
-        minimum_airitme_purchase:0,
-        daily_withdrawal_limit:0,
-        airtime_purchase_limit:90,
-        withdrawal_fee_percentage:0,
-        withdrawal_limit_to_charge:0,
-
-        minimum_withdrawal_amount:0
-    })
+    )
 
 onMounted(async () => {
   await getProviders();

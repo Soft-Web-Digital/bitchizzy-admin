@@ -114,11 +114,11 @@ const selected = ref(["John"]);
 
 <template>
   <h2 class="my-1">Service Providers</h2>
-  <div class="d-flex align-center justify-end mb-4">
+  <!-- <div class="d-flex align-center justify-end mb-4">
     <v-btn @click="dialog = true, close()" color="secondary"
         >Create Provider
     </v-btn>
-  </div>
+  </div> -->
 
   <v-card>
     <v-card-text>

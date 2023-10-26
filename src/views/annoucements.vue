@@ -336,7 +336,7 @@ const currentDate = ref(new Date().toISOString().slice(0, 10));
         <v-progress-circular indeterminate></v-progress-circular>
       </v-layout>
       <p
-        v-if="loading == false && alerts?.length <= 0"
+        v-if="loading == false && alerts.data?.length <= 0"
         class="text-center py-6"
       >
         No data available

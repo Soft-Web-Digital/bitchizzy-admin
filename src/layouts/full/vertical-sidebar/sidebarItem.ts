@@ -80,38 +80,47 @@ const sidebarItem: menu[] = [
   //   permissions:"manage_access_control_list"
   // },
 
-  { header: "News & Updates", group_name:"notification" },
+  // { header: "News & Updates", group_name:"notification" },
 
   {
-    title: "Announcements",
-    icon: "bell",
-    to: "/announcements",
-    permissions:'manage_alerts'
+    title:"News & Updates",
+    icon:"bell",
+    group_name:'crypto',
+    children: [
+
+      {
+        title: "Announcements",
+        // icon: "bell",
+        to: "/announcements",
+        permissions:'manage_alerts'
+      },
+      {
+        title: "Banners",
+        // icon: "flag",
+        to: "/banners",
+        permissions:"manage_system_data"
+      },
+      {
+        title: "FAQ",
+        // icon: "help-circle",
+        to: "/faq",
+        permissions:"manage_system_data"
+      },
+      {
+        title: "App Version",
+        // icon: "smartphone",
+        to: "/app-version",
+        permissions:"manage_system_data"
+      },
+      {
+        title: "Referral Terms",
+        // icon: "user-plus",
+        to: "/referral/terms/all",
+        permissions:"manage_system_data"
+      },
+],
   },
-  {
-    title: "Banners",
-    icon: "flag",
-    to: "/banners",
-    permissions:"manage_system_data"
-  },
-  {
-    title: "FAQ",
-    icon: "help-circle",
-    to: "/faq",
-    permissions:"manage_system_data"
-  },
-  {
-    title: "App Version",
-    icon: "smartphone",
-    to: "/app-version",
-    permissions:"manage_system_data"
-  },
-  {
-    title: "Referral Terms",
-    icon: "user-plus",
-    to: "/referral/terms/all",
-    permissions:"manage_system_data"
-  },
+
 
  { header: "Configuration", group_name:"giftcard" },
 

@@ -647,7 +647,7 @@ export const useAssetStore = defineStore("asset", {
       formData.append("sell_min_amount", asset_t.sell_min_amount);
       formData.append("sell_max_amount", asset_t.sell_max_amount);
 
-      const ids = asset_t.networks;
+      const ids = asset_t.network_id;
 
       for (let i = 0; i < ids.length; i++) {
         formData.append("networks[]", ids[i]);

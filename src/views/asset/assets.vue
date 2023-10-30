@@ -135,6 +135,9 @@ const editItem = (item: any) => {
   dialogTitle.value = "Edit asset";
   dialog.value = true;
   edit.value = true;
+
+  console.log(asset.value);
+  
 };
 
 const closeDialog = () => {

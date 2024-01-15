@@ -27,6 +27,7 @@ const nextPage = () => {
 </script>
 
 <template>
+  <!-- Check out staging -->
   <v-row class="h-100vh">
     <v-col
       cols="12"
@@ -40,7 +41,6 @@ const nextPage = () => {
         <div class="pa-7 pa-sm-12">
           <v-row>
             <v-col cols="12" lg="9" xl="6">
-              <!-- <img src="@/assets/images/logo-icon.png" /> -->
               <LogoDark />
               <h2 class="font-weight-bold mt-4 text--darken-2">Sign in</h2>
               <v-form

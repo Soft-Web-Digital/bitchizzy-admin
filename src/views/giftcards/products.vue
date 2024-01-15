@@ -8,7 +8,7 @@ import { useGiftCardStore } from "../../stores/giftcard";
 import { useDateFormat } from "@vueuse/core";
 import useFormatter from "@/composables/useFormatter";
 const { countries, giftCardCategories, currencies, giftCategories } = storeToRefs(useCountryStore());
-const { giftCard, loading, dialog, gift_products } = storeToRefs(useGiftProductStore());
+const { giftCard, loading, dialog, gift_products, dialog2, singleGiftProduct } = storeToRefs(useGiftProductStore());
 // const { giftCard:productCard } = storeToRefs(useGiftCardStore());
 const { getSingleGifCardCategories } = useGiftCardStore();
 const {
@@ -17,7 +17,7 @@ const {
   deleteGifCardProducts,
   activationGifCardProduct,
   editGiftCardProduct,
-  
+  getSingleGifCard,
 } = useGiftProductStore();
 const { sortItems } = useFormatter();
 
@@ -66,6 +66,9 @@ const giftCardCategoryHeader = reactive([
   },
   {
     title: "Name",
+  },
+  {
+    title: "Country",
   },
   {
     title: "Sell Rate",
@@ -187,7 +190,7 @@ const activation_status = ref("");
       </v-col>
     </v-row>
   </v-card>
-  <v-card class="my-4">
+  <v-card class="my-1">
     <v-table>
       <thead>
         <tr>
@@ -203,7 +206,8 @@ const activation_status = ref("");
       <tbody v-if="loading == false && gift_products?.data?.length > 0">
         <tr v-for="(item, index) in sortItems(gift_products.data)" :key="item?.id">
           <td>{{ index + 1 }}</td>
-          <td>{{ item?.name }}</td>
+          <td class="break-txt">{{ item?.name }}</td>
+          <td>{{ item?.country?.name }}</td>
           <td>{{ item.sell_rate.toLocaleString() }}</td>
           <td>₦‎ {{ item.sell_min_amount.toLocaleString() }}</td>
           <td>₦‎ {{ item.sell_max_amount.toLocaleString() }}</td>
@@ -222,27 +226,49 @@ const activation_status = ref("");
             ></v-switch>
           </td>
           <td>
-            <v-icon
-              small
-              class="mr-2 text-secondary cursor-pointer"
-              @click="showDetails(item?.id)"
-              title="view"
-              >mdi-eye</v-icon
-            >
-            <v-icon
-              small
-              class="mr-2 text-primary cursor-pointer"
-              @click="editItem(item)"
-              title="Edit"
-              >mdi-pencil</v-icon
-            >
-            <v-icon
-              small
-              class="text-error cursor-pointer"
-              title="Delete"
-              @click="deleteGifCardProducts(item?.id)"
-              >mdi-delete</v-icon
-            >
+            <v-row justify="center">
+                  <v-menu transition="scroll-y-transition">
+                    <template v-slot:activator="{ props }">
+                      <v-btn
+                        text
+                        icon="mdi-dots-vertical"
+                        color="transparent"
+                        class="ma-2"
+                        v-bind="props"
+                      >
+                      </v-btn>
+                    </template>
+                    <v-list>
+                      <v-list-item
+                        @click="dialog2 = true, getSingleGifCard(item?.id)"
+                        link
+                        color="secondary"
+                      >
+                        <v-list-item-title>
+                          View Product
+                        </v-list-item-title>
+                      </v-list-item>
+                      <v-list-item
+                        @click="editItem(item)"
+                        link
+                        color="secondary"
+                      >
+                        <v-list-item-title>
+                          Edit Product
+                        </v-list-item-title>
+                      </v-list-item>
+                      <v-list-item
+                        @click="deleteGifCardProducts(item?.id)"
+                        link
+                        color="secondary"
+                      >
+                        <v-list-item-title>
+                          Delete Product
+                        </v-list-item-title>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
+                </v-row>
           </td>
         </tr>
       </tbody>
@@ -393,10 +419,117 @@ const activation_status = ref("");
       </v-card>
     </v-dialog>
   </v-row>
+
+  <v-row justify="center">
+      <v-dialog v-model="dialog2" max-width="500px">
+        <v-card>
+          <h3 class="text-center my-4">Product Details</h3>
+          <v-layout v-if="loading == true" class="align-center justify-center w-100 my-5">
+            <v-progress-circular indeterminate></v-progress-circular>
+          </v-layout>
+          <v-container v-else class="fill-height">
+            <div class="d-flex flex-row">
+              <div class="">
+                <div>
+                  <h4 class="text-grey font-weight-light">Name</h4>
+                  <div class="d-flex align-center">
+                    <p class="my-3 font-weight-bold">
+                      {{ singleGiftProduct.name }}
+                    </p>
+                  </div>
+                </div>
+                <div>
+                  <h4 class="text-grey font-weight-light">Country</h4>
+                  <div class="d-flex align-center">
+                    <p class="my-3 font-weight-bold">{{ singleGiftProduct.country?.name }}</p>
+                  </div>
+                </div>
+                <div>
+                  <h4 class="text-grey font-weight-light">Currency</h4>
+                  <div class="d-flex align-center">
+                    <p class="my-3 font-weight-bold">{{ singleGiftProduct.currency?.code }}</p>
+                  </div>
+                </div>
+                <div>
+                  <h4 class="text-grey font-weight-light">Giftcard Category</h4>
+                  <div class="d-flex align-center">
+                    <p class="my-3 font-weight-bold">{{ singleGiftProduct.giftcard_category?.name }}</p>
+                  </div>
+                </div>
+                <div>
+                  <h4 class="text-grey font-weight-light">Min Sell Amount</h4>
+                  <div class="d-flex align-center">
+                    <p class="my-3 font-weight-bold">₦‎ {{ singleGiftProduct.sell_min_amount?.toLocaleString() }}</p>
+                  </div>
+                </div>
+                <div>
+                  <h4 class="text-grey font-weight-light">Max Sell Amount</h4>
+                  <div class="d-flex align-center">
+                    <p class="my-3 font-weight-bold">₦‎ {{ singleGiftProduct.sell_max_amount?.toLocaleString() }}</p>
+                  </div>
+                </div>
+                <div>
+                  <h4 class="text-grey font-weight-light">Sell Rate</h4>
+                  <div class="d-flex align-center">
+                    <p class="my-3 font-weight-bold">{{ singleGiftProduct.sell_rate?.toLocaleString() }}</p>
+                  </div>
+                </div>
+                <!-- <div>
+                  <h4 class="text-grey font-weight-light">Code</h4>
+                  <p class="my-3 font-weight-bold">{{ singleGiftProduct.code }}</p>
+                </div>
+                <div>
+                  <h4 class="text-grey font-weight-light">Buy Rate</h4>
+                  <p class="my-3 font-weight-bold">
+                    {{ singleGiftProduct.buy_rate }}
+                  </p>
+                </div>
+                <div>
+                  <h4 class="text-grey grey-darken-4 font-weight-light">Sell Rate</h4>
+                  <p class="my-3 font-weight-bold">
+                    {{ singleGiftProduct.sell_rate }}
+                  </p>
+                </div> -->
+              </div>
+              <!-- <div v-if="singleGiftProduct?.networks?.length > 0" class="mt-8">
+                <h3 class="text-grey font-weight-bold">
+                  Network(s) that belong to this asset:
+                </h3>
+
+                <v-row class="">
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    v-for="network in singleGiftProduct?.networks"
+                    :key="network?.id"
+                  >
+                    <div class="mb-2">
+                      <h4 class="mb-1 text-grey font-weight-light">Name</h4>
+                      <p class="font-weight-bold">{{ network.name }}</p>
+                    </div>
+                    <div class="mb-2">
+                      <h4 class="mb-1 text-grey font-weight-light">Wallet address</h4>
+                      <p class="font-weight-bold">
+                        {{ network.wallet_address }}
+                      </p>
+                    </div>
+                  </v-col>
+                </v-row>
+              </div>
+              <p v-else class="text-center py-5">This asset has no related network</p> -->
+            </div>
+          </v-container>
+        </v-card>
+      </v-dialog>
+    </v-row>
 </template>
 
 <style scoped>
 table tbody tr td {
-  padding: 18px !important;
+  padding: 0px 18px !important;
+  margin: 0px !important;
+}
+.break-txt {
+  max-width: 200px;
 }
 </style>

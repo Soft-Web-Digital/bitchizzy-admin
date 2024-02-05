@@ -232,6 +232,15 @@ const searching = ref(false)
                       required
                     ></v-textarea>
                   </v-col>
+
+                  <v-col cols="12" sm="6" md="12">
+                    <v-textarea
+                      v-model="network.memo"
+                      variant="outlined"
+                      label="Memo"
+                      required
+                    ></v-textarea>
+                  </v-col>
                 </v-row>
                 <v-card-actions>
                   <v-spacer></v-spacer>
@@ -278,6 +287,13 @@ const searching = ref(false)
                   <h4 class="text-grey font-weight-light">Wallet address</h4>
                   <p class="my-1 font-weight-bold">
                     {{ single_network?.wallet_address }}
+                  </p>
+                </div>
+
+                <div class="my-1">
+                  <h4 class="text-grey font-weight-light">Memo</h4>
+                  <p class="my-1 font-weight-bold">
+                    {{ single_network?.memo || "Null"}}
                   </p>
                 </div>
               </div>

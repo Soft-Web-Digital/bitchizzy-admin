@@ -20,7 +20,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            cd /var/www/frontend-staging
+            cd /var/www/admin-staging
             git pull origin staging
             npm i
             npm run build

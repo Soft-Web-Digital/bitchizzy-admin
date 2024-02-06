@@ -20,7 +20,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            cd /var/www/frontend-live/
+            cd /var/www/admin-live/
             git pull origin main
-            npm i
+            npm i --force
             npm run build

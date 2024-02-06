@@ -1,9 +1,9 @@
-name: Prod CI
+name: Staging CI
 
 on:
   push:
     branches:
-      - main
+      - staging
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -20,7 +20,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            cd /var/www/frontend-staging/
-            git pull origin main
-            npm i
+            cd /var/www/admin-staging
+            git pull origin staging
+            npm i --force
             npm run build

@@ -18,6 +18,7 @@ interface GiftCardProduct {
   loading: boolean;
   gift_products: GiftProductPayload;
   dialog: boolean;
+  dialog2: boolean;
   singleGiftProduct: any;
 }
 
@@ -59,6 +60,7 @@ export const useGiftProductStore = defineStore("gift_product", {
       giftcard_id: "",
     },
     dialog: false,
+    dialog2: false,
     singleGiftProduct: {},
   }),
   getters: {},
@@ -225,7 +227,35 @@ export const useGiftProductStore = defineStore("gift_product", {
         });
       }
     },
-
+    async getSingleGifCard(id: string) {
+      const { notify } = useNotification();
+      const store = useAuthStore();
+      try {
+        await ksbTechApi
+          .get(giftCardProducts + "/" + id + "?include=giftcardCategory,country,currency", {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${store.token}`,
+            },
+          })
+          .then(
+            (res: {
+              data: {
+                message: string;
+                data: any;
+              };
+            }) => {
+              this.singleGiftProduct = res.data.data.giftcard_product;
+            }
+          );
+      } catch (error: any) {
+        notify({
+          title: "An Error Occurred",
+          text: error.response.data.message,
+          type: "error",
+        });
+      }
+    },
     async getSingleGifCardCategories(id: string) {
       const { notify } = useNotification();
       const store = useAuthStore();

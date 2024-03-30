@@ -21,6 +21,7 @@ export const useNetworksStore = defineStore("networks", {
     network: {
       name: "",
       wallet_address: "",
+      memo: "",
     },
     system_data:[],
     app_version:[],
@@ -31,7 +32,8 @@ export const useNetworksStore = defineStore("networks", {
   actions: {
     async createNetworks(network_data:{
         name:string,
-        wallet_address:string
+        wallet_address:string,
+        memo: string,
     }) {
         const store = useAuthStore();
         var formData = new FormData();
@@ -40,6 +42,7 @@ export const useNetworksStore = defineStore("networks", {
   
         formData.append("name", network_data.name);
         formData.append("wallet_address", network_data.wallet_address);
+        formData.append("memo", network_data.memo);
     
         const { notify } = useNotification();
         try {
@@ -80,7 +83,8 @@ export const useNetworksStore = defineStore("networks", {
     async editNetworks(network_data:{
         name:string,
         id:string,
-        wallet_address:string
+        wallet_address:string,
+        memo: string,
     }) {
         const store = useAuthStore();
         var formData = new FormData();
@@ -89,6 +93,7 @@ export const useNetworksStore = defineStore("networks", {
   
         formData.append("name", network_data.name);
         formData.append("wallet_address", network_data.wallet_address);
+        formData.append("memo", network_data.memo);
         formData.append("_method", "PATCH");
     
         const { notify } = useNotification();

@@ -18,6 +18,7 @@ interface GiftCardProduct {
   loading: boolean;
   gift_products: GiftProductPayload;
   dialog: boolean;
+  dialog2: boolean;
   singleGiftProduct: any;
 }
 
@@ -59,6 +60,7 @@ export const useGiftProductStore = defineStore("gift_product", {
       giftcard_id: "",
     },
     dialog: false,
+    dialog2: false,
     singleGiftProduct: {},
   }),
   getters: {},
@@ -180,9 +182,28 @@ export const useGiftProductStore = defineStore("gift_product", {
       const { notify } = useNotification();
 
       var formData = new FormData();
-      formData.append("giftcard_category_id", payload.giftcard_category_id);
-      formData.append("country_id", payload.country_id);
-      formData.append("currency_id", payload.currency_id);
+
+      if(this.giftCard.giftcard_category.id) {
+        formData.append("giftcard_category_id", this.giftCard.giftcard_category.id);
+      } else {
+        formData.append("giftcard_category_id", this.giftCard.giftcard_category);
+      }
+
+      if(this.giftCard.country.id) {
+        formData.append("country_id", this.giftCard.country.id);
+      } else {
+        formData.append("country_id", this.giftCard.country);
+      }
+
+      if(this.giftCard.currency.id) {
+        formData.append("currency_id", this.giftCard.currency.id);
+      } else {
+        formData.append("currency_id", this.giftCard.currency);
+      }
+
+      // formData.append("giftcard_category_id", payload.giftcard_category_id);
+      // formData.append("country_id", payload.country_id);
+      // formData.append("currency_id", payload.currency_id);
 
       formData.append("name", payload.name);
       formData.append("sell_rate", payload.sell_rate);
@@ -190,7 +211,7 @@ export const useGiftProductStore = defineStore("gift_product", {
       formData.append("sell_max_amount", payload.sell_max_amount);
       formData.append("_method", "PATCH");
       // formData.append("country_id", JSON.stringify(this.giftCard.country));
-
+      
       this.loading = true;
       try {
         await ksbTechApi
@@ -225,7 +246,35 @@ export const useGiftProductStore = defineStore("gift_product", {
         });
       }
     },
-
+    async getSingleGifCard(id: string) {
+      const { notify } = useNotification();
+      const store = useAuthStore();
+      try {
+        await ksbTechApi
+          .get(giftCardProducts + "/" + id + "?include=giftcardCategory,country,currency", {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${store.token}`,
+            },
+          })
+          .then(
+            (res: {
+              data: {
+                message: string;
+                data: any;
+              };
+            }) => {
+              this.singleGiftProduct = res.data.data.giftcard_product;
+            }
+          );
+      } catch (error: any) {
+        notify({
+          title: "An Error Occurred",
+          text: error.response.data.message,
+          type: "error",
+        });
+      }
+    },
     async getSingleGifCardCategories(id: string) {
       const { notify } = useNotification();
       const store = useAuthStore();

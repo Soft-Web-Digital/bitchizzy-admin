@@ -20,6 +20,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
+            nvm use 16.20.2
             cd /var/www/admin-staging
             git pull origin staging
             yarn install

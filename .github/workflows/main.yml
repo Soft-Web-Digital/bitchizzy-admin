@@ -20,8 +20,8 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            nvm use 16.20.2
             cd /var/www/admin-live/
             git pull origin main
+            nvm use 16.20.2
             yarn install
             yarn build

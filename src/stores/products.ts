@@ -182,9 +182,28 @@ export const useGiftProductStore = defineStore("gift_product", {
       const { notify } = useNotification();
 
       var formData = new FormData();
-      formData.append("giftcard_category_id", payload.giftcard_category_id);
-      formData.append("country_id", payload.country_id);
-      formData.append("currency_id", payload.currency_id);
+
+      if(this.giftCard.giftcard_category.id) {
+        formData.append("giftcard_category_id", this.giftCard.giftcard_category.id);
+      } else {
+        formData.append("giftcard_category_id", this.giftCard.giftcard_category);
+      }
+
+      if(this.giftCard.country.id) {
+        formData.append("country_id", this.giftCard.country.id);
+      } else {
+        formData.append("country_id", this.giftCard.country);
+      }
+
+      if(this.giftCard.currency.id) {
+        formData.append("currency_id", this.giftCard.currency.id);
+      } else {
+        formData.append("currency_id", this.giftCard.currency);
+      }
+
+      // formData.append("giftcard_category_id", payload.giftcard_category_id);
+      // formData.append("country_id", payload.country_id);
+      // formData.append("currency_id", payload.currency_id);
 
       formData.append("name", payload.name);
       formData.append("sell_rate", payload.sell_rate);
@@ -192,7 +211,7 @@ export const useGiftProductStore = defineStore("gift_product", {
       formData.append("sell_max_amount", payload.sell_max_amount);
       formData.append("_method", "PATCH");
       // formData.append("country_id", JSON.stringify(this.giftCard.country));
-
+      
       this.loading = true;
       try {
         await ksbTechApi

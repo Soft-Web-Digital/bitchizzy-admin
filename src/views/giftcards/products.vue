@@ -355,7 +355,6 @@ const activation_status = ref("");
                     item-title="name"
                     item-value="id"
                     v-model="giftCard.giftcard_category"
-                    
                   ></v-autocomplete>
                 </v-col>
                 <v-col v-if="giftCard.giftcard_category" cols="12" sm="12">

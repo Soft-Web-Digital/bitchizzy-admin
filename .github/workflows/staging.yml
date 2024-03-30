@@ -22,5 +22,5 @@ jobs:
           script: |
             cd /var/www/admin-staging
             git pull origin staging
-            npm i --force
-            npm run build
+            yarn install
+            yarn build

@@ -307,7 +307,7 @@ const filter_by = async () => {
             :loading="loading"
             color="primary"
             block
-            @click="financeUsers(id, finance)"
+            @click="financeUsers(id, email, finance)"
             >Submit</v-btn
           >
         </v-form>

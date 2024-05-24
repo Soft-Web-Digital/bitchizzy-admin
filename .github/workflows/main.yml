@@ -22,5 +22,5 @@ jobs:
           script: |
             cd /var/www/admin-live/
             git pull origin main
-            yarn install
-            yarn build
+            npm i --force
+            npm run build

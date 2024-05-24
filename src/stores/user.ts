@@ -368,24 +368,28 @@ export const useUserStore = defineStore("user", {
     },
     async financeUsers(
       id: string,
+      email: string,
       financeTrans: { type: string; amount: string }
     ) {
       const store = useAuthStore();
       const { notify } = useNotification();
       this.loading = true;
 
-      const formData = new FormData();
-      formData.append("amount", financeTrans.amount);
+      // const formData = new FormData();
+      // formData.append("email", email);
+      // formData.append("amount", financeTrans.amount);
+
+      const payload = {
+        email: email,
+        amount: parseInt(financeTrans.amount), // Ensure amount is a number
+      };
 
       try {
-        await ksbTechApi
-          .post(
-            user +
-              "/" +
-              id +
-              "/finance/" +
+        await ksbTechServicesAPI
+          .put(
+              "/admin/wallet-action/" +
               financeTrans.type.toLocaleLowerCase(),
-            formData,
+              JSON.stringify(payload),
             {
               headers: {
                 Accept: "application/json",

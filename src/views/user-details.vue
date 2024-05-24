@@ -851,7 +851,7 @@
             :loading="loading"
             color="primary"
             block
-            @click="financeUsers(id, finance)"
+            @click="financeUsers(id, single_user.email, finance)"
             >Submit</v-btn
           >
         </v-form>

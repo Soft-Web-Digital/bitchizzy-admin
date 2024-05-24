@@ -22,5 +22,6 @@ jobs:
           script: |
             cd /var/www/admin-staging
             git pull origin staging
+            nvm use 16.20.2
             yarn install
             yarn build

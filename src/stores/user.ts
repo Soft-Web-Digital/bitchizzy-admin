@@ -120,9 +120,9 @@ export const useUserStore = defineStore("user", {
       const { notify } = useNotification();
       this.loading = true;
       try {
-        await ksbTechApi
+        await ksbTechServicesAPI
           .get(
-            `${user}?filter[name]=${name}&filter[email]=${email}&filter[registration_date]=${date1}${
+            `${user}/all?filter[name]=${name}&filter[email]=${email}&filter[registration_date]=${date1}${
               date2 !== "" ? `,${date2}` : ""
             }&page=${page}&per_page=${"100"}`,
             {
@@ -217,7 +217,7 @@ export const useUserStore = defineStore("user", {
 
       this.loading = true;
       try {
-        await ksbTechApi
+        await ksbTechServicesAPI
           .get(`/admin/users/${id}`, {
             headers: {
               Accept: "application/json",
